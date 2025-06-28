@@ -8,4 +8,8 @@
     <RootNamespace>TradingBot.Api</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Edison.Trading.csproj" />
+  </ItemGroup>
+
 </Project>

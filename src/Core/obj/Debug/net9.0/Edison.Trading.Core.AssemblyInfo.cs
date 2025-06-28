@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Edison.Trading.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4331bd2f7b3889c5dc2f5ef363a1aafc77b1c4e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5a948e91921699debd36266bb62a29854fff1b4f")]
 [assembly: System.Reflection.AssemblyProductAttribute("Edison.Trading.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Edison.Trading.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

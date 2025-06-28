@@ -4,10 +4,7 @@ C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net9.0\Edison.Trad
 C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net9.0\Edison.Trading.Core.AssemblyInfo.cs
 C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net9.0\Edison.Trading.Core.csproj.CoreCompileInputs.cache
 C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net9.0\Edison.Trading.Core.sourcelink.json
-C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net9.0\Edison.Trading.Api.deps.json
-C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net9.0\Edison.Trading.Api.runtimeconfig.json
 C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net9.0\ProfitDLL.dll
-C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net9.0\Edison.Trading.Api.exe
 C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net9.0\Edison.Trading.Core.deps.json
 C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net9.0\Edison.Trading.Core.dll
 C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net9.0\Edison.Trading.Core.pdb

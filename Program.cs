@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 
 
 // Alterando o namespace para Edison.Trading.Api
-namespace Edison.Trading.Api;
+namespace Edison.Trading;
 
 #region Struturas para exemplo
 public struct CandleTrade
