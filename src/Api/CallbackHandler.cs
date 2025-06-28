@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace ProfitDLLClient;
+namespace Edison.Trading.Api;
 
 public partial class DLLConnector
 {

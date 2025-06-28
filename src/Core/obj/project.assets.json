@@ -1,0 +1,103 @@
+{
+  "version": 3,
+  "targets": {
+    "net9.0": {
+      "Edison.Trading.Api/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Edison.Trading.Api.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Edison.Trading.Api.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Edison.Trading.Api/1.0.0": {
+      "type": "project",
+      "path": "../Api/Edison.Trading.Api.csproj",
+      "msbuildProject": "../Api/Edison.Trading.Api.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net9.0": [
+      "Edison.Trading.Api >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\Edinho\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Core\\Edison.Trading.Core.csproj",
+      "projectName": "Edison.Trading.Core",
+      "projectPath": "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Core\\Edison.Trading.Core.csproj",
+      "packagesPath": "C:\\Users\\Edinho\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Core\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\Edinho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net9.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "projectReferences": {
+            "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Api\\Edison.Trading.Api.csproj": {
+              "projectPath": "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Api\\Edison.Trading.Api.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.300"
+    },
+    "frameworks": {
+      "net9.0": {
+        "targetAlias": "net9.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

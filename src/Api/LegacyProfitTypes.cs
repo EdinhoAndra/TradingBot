@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace ProfitDLLClient;
+namespace Edison.Trading.Api;
 
 #region Types
 public struct TConnectorOffer(double price, long qtd, int agent, long offerId, DateTime date)

@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Edison.Trading.Core/1.0.0": {
+        "dependencies": {
+          "Edison.Trading.Api": "1.0.0"
+        },
+        "runtime": {
+          "Edison.Trading.Core.dll": {}
+        }
+      },
+      "Edison.Trading.Api/1.0.0": {
+        "runtime": {
+          "Edison.Trading.Api.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Edison.Trading.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Edison.Trading.Api/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

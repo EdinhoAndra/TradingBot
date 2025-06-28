@@ -20,4 +20,9 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\src\Core\Edison.Trading.Core.csproj" />
+    <ProjectReference Include="..\src\Api\Edison.Trading.Api.csproj" />
+  </ItemGroup>
+
 </Project>

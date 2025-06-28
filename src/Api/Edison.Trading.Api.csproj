@@ -7,16 +7,19 @@
     <Nullable>enable</Nullable>
     <!-- Desabilita a inclusão automática de itens Compile -->
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <RootNamespace>Edison.Trading.Api</RootNamespace>
   </PropertyGroup>
 
-  <!-- Inclui apenas Program.cs explicitamente -->
+  <!-- Inclui os arquivos fonte necessários explicitamente -->
   <ItemGroup>
-    <Compile Include="src\Api\Program.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ProfitDLL.Types.cs" />
+    <Compile Include="ProfitDLL.Imports.cs" />
   </ItemGroup>
   
   <!-- Copia o arquivo ProfitDLL.dll da raiz para a pasta de saída -->
   <ItemGroup>
-    <None Include="ProfitDLL.dll">
+    <None Include="..\lib\ProfitDLL.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

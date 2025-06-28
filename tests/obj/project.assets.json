@@ -346,6 +346,29 @@
             "related": ".xml"
           }
         }
+      },
+      "Edison.Trading.Api/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/Edison.Trading.Api.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Edison.Trading.Api.dll": {}
+        }
+      },
+      "Edison.Trading.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "dependencies": {
+          "Edison.Trading.Api": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Edison.Trading.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Edison.Trading.Core.dll": {}
+        }
       }
     }
   },
@@ -793,10 +816,22 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Edison.Trading.Api/1.0.0": {
+      "type": "project",
+      "path": "../src/Api/Edison.Trading.Api.csproj",
+      "msbuildProject": "../src/Api/Edison.Trading.Api.csproj"
+    },
+    "Edison.Trading.Core/1.0.0": {
+      "type": "project",
+      "path": "../src/Core/Edison.Trading.Core.csproj",
+      "msbuildProject": "../src/Core/Edison.Trading.Core.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
+      "Edison.Trading.Api >= 1.0.0",
+      "Edison.Trading.Core >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.12.0",
       "NUnit >= 4.2.2",
       "NUnit.Analyzers >= 4.4.0",
@@ -836,7 +871,14 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Api\\Edison.Trading.Api.csproj": {
+              "projectPath": "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Api\\Edison.Trading.Api.csproj"
+            },
+            "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Core\\Edison.Trading.Core.csproj": {
+              "projectPath": "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Core\\Edison.Trading.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
