@@ -178,7 +178,11 @@ public class NelogicaRenkoGenerator
         double absMovement = Math.Abs(totalMovement);
 
         double reversalClose = openPrice + (direction == RenkoDirection.Up ? ReversalBrickBodySize : -ReversalBrickBodySize);
-        CreateAndAddBrick(openPrice, reversalClose, direction, timestamp, _currentSwingHigh, _currentSwingLow);
+
+        double high = direction == RenkoDirection.Up ? reversalClose : _currentSwingHigh;
+        double low = direction == RenkoDirection.Down ? reversalClose : _currentSwingLow;
+
+        CreateAndAddBrick(openPrice, reversalClose, direction, timestamp, high, low);
 
         double remainingMovement = absMovement - ThresholdReversalMove;
         if (remainingMovement >= ThresholdRegularMove)
