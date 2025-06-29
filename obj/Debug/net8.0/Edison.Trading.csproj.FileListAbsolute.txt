@@ -1,8 +1,4 @@
 C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.exe
-C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.deps.json
-C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.runtimeconfig.json
-C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.dll
-C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.pdb
 C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Google.Protobuf.dll
 C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.Core.dll
 C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.Core.pdb
@@ -16,5 +12,10 @@ C:\Users\Edinho\Projetos\CSharp\TradingBot\obj\Debug\net8.0\Edison.T.1E154853.Up
 C:\Users\Edinho\Projetos\CSharp\TradingBot\obj\Debug\net8.0\Edison.Trading.dll
 C:\Users\Edinho\Projetos\CSharp\TradingBot\obj\Debug\net8.0\refint\Edison.Trading.dll
 C:\Users\Edinho\Projetos\CSharp\TradingBot\obj\Debug\net8.0\Edison.Trading.pdb
+C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.deps.json
+C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.runtimeconfig.json
+C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.dll
+C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\Edison.Trading.pdb
 C:\Users\Edinho\Projetos\CSharp\TradingBot\obj\Debug\net8.0\Edison.Trading.genruntimeconfig.cache
 C:\Users\Edinho\Projetos\CSharp\TradingBot\obj\Debug\net8.0\ref\Edison.Trading.dll
+C:\Users\Edinho\Projetos\CSharp\TradingBot\bin\Debug\net8.0\ProfitDLL.dll

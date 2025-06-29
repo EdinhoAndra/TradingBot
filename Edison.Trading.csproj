@@ -16,10 +16,9 @@
     <Compile Remove="tests\**\*.cs" />
     <Compile Remove="docs\**\*.cs" />
     <ProjectReference Include="src\Core\Edison.Trading.Core.csproj" />
-    <Reference Include="ProfitDLL">
-      <HintPath>src\lib\ProfitDLL.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
+    <None Include="ProfitDLL.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
