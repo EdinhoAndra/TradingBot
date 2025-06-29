@@ -13,6 +13,8 @@
     <!-- <Compile Include="Program.cs" /> removido, pois o SDK já inclui automaticamente todos os arquivos .cs -->
     <!-- Exclui arquivos do Core do build deste projeto para evitar tipos duplicados -->
     <Compile Remove="src\Core\**\*.cs" />
+    <Compile Remove="tests\**\*.cs" />
+    <Compile Remove="docs\**\*.cs" />
     <ProjectReference Include="src\Core\Edison.Trading.Core.csproj" />
     <Reference Include="ProfitDLL">
       <HintPath>src\lib\ProfitDLL.dll</HintPath>

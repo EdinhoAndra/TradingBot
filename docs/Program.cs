@@ -1,5 +1,4 @@
 ﻿using System;
-using Edison.Trading.Core;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
@@ -10,8 +9,6 @@ using System.Threading;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Runtime.CompilerServices;
-
-using static Edison.Trading.Core.ProfitDLL;
 
 namespace ProfitDLLClient;
 
@@ -117,8 +114,6 @@ public partial class DLLConnector
     public static TAdjustHistoryCallbackV2 _adjustHistoryCallbackV2 = new TAdjustHistoryCallbackV2(AdjustHistoryCallbackV2);
     public static TConnectorOrderCallback _orderCallback = new TConnectorOrderCallback(OrderCallback);
     public static TConnectorAccountCallback _orderHistoryCallback = new TConnectorAccountCallback(OrderHistoryCallback);
-    public static Edison.Trading.Core.TConnectorTradeCallback _TradeCallback = new Edison.Trading.Core.TConnectorTradeCallback(DLLConnector.TradeCallback);
-    public static Edison.Trading.Core.TConnectorTradeCallback _HistoryTradeCallback = new Edison.Trading.Core.TConnectorTradeCallback(DLLConnector.HistoryTradeCallback);
 
     #endregion
 
@@ -285,7 +280,7 @@ public partial class DLLConnector
             date = DateTime.MinValue;
         }
 
-        var offer = new TConnectorOffer(sPrice, nQtd, nAgent, nOfferID, SystemTime.FromDateTime(date));
+        var offer = new TConnectorOffer(sPrice, nQtd, nAgent, nOfferID, date);
 
         switch (nAction)
         {
@@ -612,7 +607,7 @@ public partial class DLLConnector
 
             var strDate = bufferOffer[30..].Select(x => (char)x);
 
-            offer.Date = SystemTime.FromDateTime(DateTime.ParseExact(strDate.ToArray(), "dd/MM/yyyy HH:mm:ss.fff", null));
+            offer.Date = DateTime.ParseExact(strDate.ToArray(), "dd/MM/yyyy HH:mm:ss.fff", null);
 
             lstOffer.Add(offer);
 
@@ -681,19 +676,15 @@ public partial class DLLConnector
     {
         //Selecionar ativo para callback
 
-        string? input;
+        string input;
+
         do
         {
             Console.Write("Insira o codigo do ativo e clique enter: ");
-            input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input.ToUpper(), "[^:]+:[A-Za-z0-9]"));
+            input = Console.ReadLine().ToUpper();
+        } while (!Regex.IsMatch(input, "[^:]+:[A-Za-z0-9]"));
 
-        var split = input.ToUpper().Split(':');
-        if (split.Length < 2)
-        {
-            WriteSync("Formato de ativo inválido.");
-            return;
-        }
+        var split = input.Split(':');
 
         var retVal = SubscribeTicker(split[0], split[1]);
 
@@ -711,21 +702,18 @@ public partial class DLLConnector
     {
         //Selecionar ativo para callback
 
-        string? input;
+        string input;
+
         do
         {
             Console.Write("Insira o codigo do ativo e clique enter: ");
-            input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input.ToUpper(), "[^:]+:[A-Za-z0-9]"));
+            input = Console.ReadLine().ToUpper();
+        } while (!Regex.IsMatch(input, "[^:]+:[A-Za-z0-9]"));
 
-        var split = input.ToUpper().Split(':');
-        if (split.Length < 2)
-        {
-            WriteSync("Formato de ativo inválido.");
-            return;
-        }
+        var split = input.Split(':');
 
         var retVal = ProfitDLL.SubscribeOfferBook(split[0], split[1]);
+
         WriteResult(retVal);
     }
 
@@ -733,19 +721,15 @@ public partial class DLLConnector
     {
         //Selecionar ativo para callback
 
-        string? input;
+        string input;
+
         do
         {
             Console.Write("Insira o codigo do ativo e clique enter: ");
-            input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input.ToUpper(), "[^:]+:[A-Za-z0-9]"));
+            input = Console.ReadLine().ToUpper();
+        } while (!Regex.IsMatch(input, "[^:]+:[A-Za-z0-9]"));
 
-        var split = input.ToUpper().Split(':');
-        if (split.Length < 2)
-        {
-            WriteSync("Formato de ativo inválido.");
-            return;
-        }
+        var split = input.Split(':');
 
         var retVal = UnsubscribeTicker(split[0], split[1]);
 
@@ -761,19 +745,15 @@ public partial class DLLConnector
 
     private static void RequestHistory()
     {
-        string? input;
+        string input;
+
         do
         {
             Console.Write("Insira o codigo do ativo e clique enter (ex. PETR4:B): ");
-            input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input.ToUpper(), "[^:]+:[A-Za-z0-9]"));
+            input = Console.ReadLine().ToUpper();
+        } while (!Regex.IsMatch(input, "[^:]+:[A-Za-z0-9]"));
 
-        var split = input.ToUpper().Split(':');
-        if (split.Length < 2)
-        {
-            WriteSync("Formato de ativo inválido.");
-            return;
-        }
+        var split = input.Split(':');
 
         var retVal = GetHistoryTrades(split[0], split[1], DateTime.Today.ToString(dateFormat), DateTime.Now.ToString(dateFormat));
 
@@ -790,13 +770,7 @@ public partial class DLLConnector
     public static void RequestOrder()
     {
         WriteSync("Informe um ClOrdId: ");
-        string? clOrdId = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(clOrdId))
-        {
-            WriteSync("ClOrdId não informado.");
-            return;
-        }
-        var retVal = ProfitDLL.GetOrder(clOrdId);
+        var retVal = ProfitDLL.GetOrder(Console.ReadLine());
 
         if (retVal == NL_OK)
         {
@@ -813,14 +787,14 @@ public partial class DLLConnector
         var assetId = ReadAssetID();
         var accountId = ReadAccountId();
 
-        string? input;
+        string input;
         do
         {
             Console.Write("Tipo da posição (1 - day trade, 2 - consolidado): ");
             input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || (input != "1" && input != "2"));
+        } while (input != "1" && input == "2");
 
-        var positionType = (TConnectorPositionType)byte.Parse(input!);
+        var positionType = (TConnectorPositionType)byte.Parse(input);
 
         var position = new TConnectorTradingAccountPosition()
         {
@@ -845,12 +819,13 @@ public partial class DLLConnector
 
     private static TConnectorAccountIdentifier ReadAccountId()
     {
-        string? input;
+        string input;
+
         do
         {
             Console.Write("Código do conta (ex 1171:12345:1): ");
             input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input, @"\d+:\d+(:\d+)?"));
+        } while (!Regex.IsMatch(input, @"\d+:\d+(:\d+)?"));
 
         var numbers = input.Split(':');
 
@@ -872,15 +847,16 @@ public partial class DLLConnector
 
     private static TConnectorAssetIdentifier ReadAssetID()
     {
-        string? input;
-        Match match = Match.Empty;
+        string input;
+        Match match;
+
         do
         {
             Console.Write("Código do ativo (ex PETR4:B): ");
-            input = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(input)) continue;
-            match = Regex.Match(input.ToUpper(), "([^:]+):([A-Za-z0-9])");
-        } while (string.IsNullOrWhiteSpace(input) || !match.Success);
+            input = Console.ReadLine().ToUpper();
+
+            match = Regex.Match(input, "([^:]+):([A-Za-z0-9])");
+        } while (!match.Success);
 
         return new TConnectorAssetIdentifier()
         {
@@ -892,25 +868,26 @@ public partial class DLLConnector
 
     private static void DoZeroPosition()
     {
-        string? input;
+        string input;
+
         do
         {
             Console.Write("Código do ativo (ex PETR4:B): ");
-            input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input.ToUpper(), "[^:]+:[A-Za-z0-9]"));
+            input = Console.ReadLine().ToUpper();
+        } while (!Regex.IsMatch(input, "[^:]+:[A-Za-z0-9]"));
 
         var assetId = new TConnectorAssetIdentifier()
         {
             Version = 0,
-            Ticker = input!.ToUpper()[..input.IndexOf(':')],
-            Exchange = input.ToUpper()[(input.IndexOf(':') + 1)..]
+            Ticker = input[..input.IndexOf(':')],
+            Exchange = input[(input.IndexOf(':') + 1)..]
         };
 
         do
         {
             Console.Write("Código do conta (ex 1171:12345:1): ");
             input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input, @"\d+:\d+(:\d+)?"));
+        } while (!Regex.IsMatch(input, @"\d+:\d+(:\d+)?"));
 
         var numbers = input.Split(':');
 
@@ -931,9 +908,9 @@ public partial class DLLConnector
         {
             Console.Write("Tipo da posição (1 - day trade, 2 - consolidado): ");
             input = Console.ReadLine();
-        } while (string.IsNullOrWhiteSpace(input) || (input != "1" && input != "2"));
+        } while (input != "1" && input == "2");
 
-        var positionType = (TConnectorPositionType)byte.Parse(input!);
+        var positionType = (TConnectorPositionType)byte.Parse(input);
 
         var zeroOrder = new TConnectorZeroPosition()
         {
@@ -971,6 +948,7 @@ public partial class DLLConnector
         }
 
         var accountId = ReadAccountId();
+
         var ret = ProfitDLL.EnumerateOrdersByInterval(ref accountId, 0, SystemTime.FromDateTime(DateTime.Now.AddHours(-1)), SystemTime.FromDateTime(DateTime.Now.AddMinutes(-1)), 0, EnumOrders);
 
         if (ret != NL_OK) { WriteSync($"{nameof(ProfitDLL.EnumerateOrdersByInterval)}: {(NResult)ret}"); }
@@ -982,49 +960,13 @@ public partial class DLLConnector
     {
         int retVal;
         bool bRoteamento = true;
-        // Delegate THistoryCallBack
-        static void EmptyHistoryCallback(TAssetID AssetID, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int Side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
-            string TipoOrdem, string Conta, string Titular, string ClOrdID, string Status, string Date) { }
-        // Delegate TOrderChangeCallBack
-        static void EmptyOrderChangeCallback(TAssetID assetId, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int Side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
-            string TipoOrdem, string Conta, string Titular, string ClOrdID, string Status, string Date, string TextMessage) { }
-        // Delegate TTradeCallback
-        static void EmptyTradeCallback(TAssetID assetId, string date, uint tradeNumber, double price, double vol, int qtd, int buyAgent, int sellAgent, int tradeType, int bIsEdit) { }
-        // Delegate TOfferBookCallback
-        static void EmptyOfferBookCallback(TAssetID assetId, int nAction, int nPosition, int Side, int nQtd, int nAgent, long nOfferID, double sPrice, int bHasPrice, int bHasQtd, int bHasDate, int bHasOfferID, int bHasAgent, string date, IntPtr pArraySell, IntPtr pArrayBuy) { }
-        // Delegate THistoryTradeCallback
-        static void EmptyHistoryTradeCallback(TAssetID assetId, string date, uint tradeNumber, double price, double vol, int qtd, int buyAgent, int sellAgent, int tradeType) { }
-        // Delegate TProgressCallBack
-        static void EmptyProgressCallback(TAssetID assetId, int nProgress) { }
-
         if (bRoteamento)
         {
-            retVal = ProfitDLL.DLLInitializeLogin(
-                key, user, password, _stateCallback,
-                new Edison.Trading.Core.THistoryCallBack(EmptyHistoryCallback),
-                new Edison.Trading.Core.TOrderChangeCallBack(EmptyOrderChangeCallback),
-                _accountCallback,
-                new Edison.Trading.Core.TTradeCallback(EmptyTradeCallback),
-                _newDailyCallback,
-                _priceBookCallback,
-                new Edison.Trading.Core.TOfferBookCallback(EmptyOfferBookCallback),
-                new Edison.Trading.Core.THistoryTradeCallback(EmptyHistoryTradeCallback),
-                new Edison.Trading.Core.TProgressCallBack(EmptyProgressCallback),
-                _newTinyBookCallBack
-            );
+            retVal = ProfitDLL.DLLInitializeLogin(key, user, password, _stateCallback, null, null, _accountCallback, null, _newDailyCallback, _priceBookCallback, null, null, null, _newTinyBookCallBack);
         }
         else
         {
-            retVal = ProfitDLL.DLLInitializeMarketLogin(
-                key, user, password, _stateCallback,
-                new Edison.Trading.Core.TTradeCallback(EmptyTradeCallback),
-                _newDailyCallback,
-                _priceBookCallback,
-                new Edison.Trading.Core.TOfferBookCallback(EmptyOfferBookCallback),
-                new Edison.Trading.Core.THistoryTradeCallback(EmptyHistoryTradeCallback),
-                new Edison.Trading.Core.TProgressCallBack(EmptyProgressCallback),
-                _newTinyBookCallBack
-            );
+            retVal = ProfitDLL.DLLInitializeMarketLogin(key, user, password, _stateCallback, null, _newDailyCallback, _priceBookCallback, null, null, null, _newTinyBookCallBack);
         }
 
         if (retVal != NL_OK)
@@ -1047,23 +989,11 @@ public partial class DLLConnector
 
     public static void Main(string[] args)
     {
-
         Console.Write("Chave de ativação: ");
-        string? key = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(key))
-        {
-            WriteSync("Chave de ativação não informada.");
-            return;
-        }
+        string key = Console.ReadLine();
 
         Console.Write("Usuário: ");
-        string? userInput = Console.ReadLine();
-        string user = !string.IsNullOrWhiteSpace(userInput) ? userInput : string.Empty;
-        if (string.IsNullOrEmpty(user))
-        {
-            WriteSync("Usuário não informado.");
-            return;
-        }
+        string user = Console.ReadLine();
 
         string password = ReadPassword();
 

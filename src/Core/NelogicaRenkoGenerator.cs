@@ -215,7 +215,9 @@ public class NelogicaRenkoGenerator
 
     private void TryCreateFirstBrick(double currentPrice, SystemTime timestamp)
     {
-        double openPrice = _anchorPrice!.Value;
+        if (_anchorPrice is null)
+            throw new InvalidOperationException("AnchorPrice não inicializado.");
+        double openPrice = _anchorPrice.Value;
         double movement = currentPrice - openPrice;
 
         if (Math.Abs(movement) >= ThresholdRegularMove)
