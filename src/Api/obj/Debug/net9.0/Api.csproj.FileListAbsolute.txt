@@ -1,5 +1,0 @@
-C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Api\obj\Debug\net9.0\Api.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Api\obj\Debug\net9.0\Api.AssemblyInfoInputs.cache
-C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Api\obj\Debug\net9.0\Api.AssemblyInfo.cs
-C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Api\obj\Debug\net9.0\Api.csproj.CoreCompileInputs.cache
-C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Api\obj\Debug\net9.0\Api.sourcelink.json

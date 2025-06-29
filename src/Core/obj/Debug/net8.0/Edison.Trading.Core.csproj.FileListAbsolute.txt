@@ -1,0 +1,13 @@
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net8.0\Edison.Trading.Core.deps.json
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net8.0\Edison.Trading.Core.dll
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\bin\Debug\net8.0\Edison.Trading.Core.pdb
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\Edison.Trading.Core.csproj.AssemblyReference.cache
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\Edison.Trading.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\Edison.Trading.Core.AssemblyInfoInputs.cache
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\Edison.Trading.Core.AssemblyInfo.cs
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\Edison.Trading.Core.csproj.CoreCompileInputs.cache
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\Edison.Trading.Core.sourcelink.json
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\Edison.Trading.Core.dll
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\refint\Edison.Trading.Core.dll
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\Edison.Trading.Core.pdb
+C:\Users\Edinho\Projetos\CSharp\TradingBot\src\Core\obj\Debug\net8.0\ref\Edison.Trading.Core.dll

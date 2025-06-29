@@ -1,29 +1,50 @@
 {
   "version": 3,
   "targets": {
-    "net9.0": {
-      "Edison.Trading.Api/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v9.0",
+    "net8.0": {
+      "Google.Protobuf/3.31.1": {
+        "type": "package",
         "compile": {
-          "bin/placeholder/Edison.Trading.Api.dll": {}
+          "lib/net5.0/Google.Protobuf.dll": {
+            "related": ".pdb;.xml"
+          }
         },
         "runtime": {
-          "bin/placeholder/Edison.Trading.Api.dll": {}
+          "lib/net5.0/Google.Protobuf.dll": {
+            "related": ".pdb;.xml"
+          }
         }
       }
     }
   },
   "libraries": {
-    "Edison.Trading.Api/1.0.0": {
-      "type": "project",
-      "path": "../Api/Edison.Trading.Api.csproj",
-      "msbuildProject": "../Api/Edison.Trading.Api.csproj"
+    "Google.Protobuf/3.31.1": {
+      "sha512": "gSnJbUmGiOTdWddPhqzrEscHq9Ls6sqRDPB9WptckyjTUyx70JOOAaDLkFff8gManZNN3hllQ4aQInnQyq/Z/A==",
+      "type": "package",
+      "path": "google.protobuf/3.31.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "google.protobuf.3.31.1.nupkg.sha512",
+        "google.protobuf.nuspec",
+        "lib/net45/Google.Protobuf.dll",
+        "lib/net45/Google.Protobuf.pdb",
+        "lib/net45/Google.Protobuf.xml",
+        "lib/net5.0/Google.Protobuf.dll",
+        "lib/net5.0/Google.Protobuf.pdb",
+        "lib/net5.0/Google.Protobuf.xml",
+        "lib/netstandard1.1/Google.Protobuf.dll",
+        "lib/netstandard1.1/Google.Protobuf.pdb",
+        "lib/netstandard1.1/Google.Protobuf.xml",
+        "lib/netstandard2.0/Google.Protobuf.dll",
+        "lib/netstandard2.0/Google.Protobuf.pdb",
+        "lib/netstandard2.0/Google.Protobuf.xml"
+      ]
     }
   },
   "projectFileDependencyGroups": {
-    "net9.0": [
-      "Edison.Trading.Api >= 1.0.0"
+    "net8.0": [
+      "Google.Protobuf >= 3.31.1"
     ]
   },
   "packageFolders": {
@@ -48,7 +69,7 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net9.0"
+        "net8.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -56,13 +77,9 @@
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
-          "projectReferences": {
-            "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Api\\Edison.Trading.Api.csproj": {
-              "projectPath": "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Api\\Edison.Trading.Api.csproj"
-            }
-          }
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -74,12 +91,17 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.300"
+      }
     },
     "frameworks": {
-      "net9.0": {
-        "targetAlias": "net9.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
+        "dependencies": {
+          "Google.Protobuf": {
+            "target": "Package",
+            "version": "[3.31.1, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -96,7 +118,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.411/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

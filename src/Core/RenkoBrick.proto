@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package Edison.Trading.Core;
+
+message RenkoBrickProto {
+  double open = 1;
+  double high = 2;
+  double low = 3;
+  double close = 4;
+  int32 direction = 5;
+  int64 timestamp = 6;
+}
+
+message RenkoBufferProto {
+  repeated RenkoBrickProto bricks = 1;
+}

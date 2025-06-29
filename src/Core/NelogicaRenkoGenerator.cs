@@ -1,9 +1,16 @@
 using System;
+using Edison.Trading.Core;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Edison.Trading.Api;
+using System.Threading;
+using System.Threading.Tasks;
+using Google.Protobuf;
 
 namespace Edison.Trading.Core;
+
+
 
 public enum RenkoDirection
 {
@@ -24,6 +31,7 @@ public class RenkoBrick
     {
         return $"[{SystemTime.ToDateTime(Timestamp):HH:mm:ss.fff}] {Direction} | O: {Open:F2} | H: {High:F2} | L: {Low:F2} | C: {Close:F2}";
     }
+
 }
 
 /// <summary>
@@ -31,6 +39,15 @@ public class RenkoBrick
 /// </summary>
 public class NelogicaRenkoGenerator
 {
+    // Buffer FIFO para os últimos N renkos
+    private int _bufferSize = 100;
+    private readonly ConcurrentQueue<RenkoBrick> _renkoBuffer = new();
+    private readonly object _bufferLock = new();
+    private CancellationTokenSource? _cts;
+    private Task? _saveTask;
+    private string _saveFilePath = "renkos.bin";
+    private int _saveIntervalSeconds = 10;
+
     public int R { get; }
     public double TickSize { get; }
     public double RegularBrickBodySize { get; }
@@ -47,6 +64,24 @@ public class NelogicaRenkoGenerator
     private double _currentSwingHigh;
     private double _currentSwingLow;
 
+    /// <summary>
+    /// Exporta o buffer de renkos para um arquivo CSV.
+    /// </summary>
+    /// <param name="csvFilePath">Caminho do arquivo CSV de destino.</param>
+    public void ExportBufferToCsv(string csvFilePath)
+    {
+        lock (_bufferLock)
+        {
+            using var writer = new StreamWriter(csvFilePath, false, System.Text.Encoding.UTF8);
+            writer.WriteLine("Open,High,Low,Close,Direction,Timestamp");
+            foreach (var brick in _renkoBuffer)
+            {
+                var dt = SystemTime.ToDateTime(brick.Timestamp).ToString("yyyy-MM-dd HH:mm:ss.fff");
+                writer.WriteLine($"{brick.Open},{brick.High},{brick.Low},{brick.Close},{brick.Direction},{dt}");
+            }
+        }
+    }
+
     public NelogicaRenkoGenerator(int r, double tickSize)
     {
         if (tickSize <= 0)
@@ -57,9 +92,93 @@ public class NelogicaRenkoGenerator
 
         ThresholdRegularMove = R * TickSize;
         RegularBrickBodySize = (R - 1) * TickSize;
-
         ThresholdReversalMove = (2 * R - 1) * TickSize;
         ReversalBrickBodySize = (2 * R - 2) * TickSize;
+
+        TryLoadBufferFromDisk();
+    }
+
+    public void ConfigureBuffer(int bufferSize, string saveFilePath, int saveIntervalSeconds)
+    {
+        _bufferSize = bufferSize;
+        _saveFilePath = saveFilePath;
+        _saveIntervalSeconds = saveIntervalSeconds;
+    }
+
+    public void StartPeriodicSave(CancellationToken? externalToken = null)
+    {
+        _cts = CancellationTokenSource.CreateLinkedTokenSource(externalToken ?? CancellationToken.None);
+        _saveTask = Task.Run(async () =>
+        {
+            while (!_cts.IsCancellationRequested)
+            {
+                await Task.Delay(_saveIntervalSeconds * 1000, _cts.Token);
+                SaveBufferToDisk();
+            }
+        }, _cts.Token);
+    }
+
+    public void StopPeriodicSaveAndFlush()
+    {
+        _cts?.Cancel();
+        _saveTask?.Wait();
+        SaveBufferToDisk();
+    }
+
+    private void TryLoadBufferFromDisk()
+    {
+        if (File.Exists(_saveFilePath))
+        {
+            try
+            {
+                using var fs = File.OpenRead(_saveFilePath);
+                var proto = RenkoBufferProto.Parser.ParseFrom(fs);
+                foreach (var p in proto.Bricks)
+                {
+                    var dt = new DateTime(p.Timestamp, DateTimeKind.Utc);
+                    _renkoBuffer.Enqueue(new RenkoBrick
+                    {
+                        Open = p.Open,
+                        High = p.High,
+                        Low = p.Low,
+                        Close = p.Close,
+                        Direction = (RenkoDirection)p.Direction,
+                        Timestamp = SystemTime.FromDateTime(dt)
+                    });
+                }
+                if (_renkoBuffer.TryPeek(out var last))
+                {
+                    Console.WriteLine($"[RENKO] Último preço do dia anterior: {last.Close}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[RENKO] Erro ao carregar buffer: {ex.Message}");
+            }
+        }
+    }
+
+    private void SaveBufferToDisk()
+    {
+        lock (_bufferLock)
+        {
+            var proto = new RenkoBufferProto();
+            foreach (var brick in _renkoBuffer)
+            {
+                long ticks = SystemTime.ToDateTime(brick.Timestamp).ToUniversalTime().Ticks;
+                proto.Bricks.Add(new RenkoBrickProto
+                {
+                    Open = brick.Open,
+                    High = brick.High,
+                    Low = brick.Low,
+                    Close = brick.Close,
+                    Direction = (int)brick.Direction,
+                    Timestamp = ticks
+                });
+            }
+            using var fs = File.Create(_saveFilePath);
+            proto.WriteTo(fs);
+        }
     }
 
     public void AddPrice(double currentPrice, SystemTime timestamp)
@@ -149,6 +268,14 @@ public class NelogicaRenkoGenerator
         };
         _bricks.Add(newBrick);
         OnCloseBrick?.Invoke(newBrick);
+
+        // Adiciona ao buffer FIFO
+        lock (_bufferLock)
+        {
+            _renkoBuffer.Enqueue(newBrick);
+            while (_renkoBuffer.Count > _bufferSize)
+                _renkoBuffer.TryDequeue(out _);
+        }
     }
 
     private void AddBricksSeries(double openPrice, double totalMovement, SystemTime timestamp)

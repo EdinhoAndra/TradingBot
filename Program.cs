@@ -1,4 +1,5 @@
 ﻿using System;
+using Edison.Trading.Core;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
@@ -10,10 +11,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Runtime.CompilerServices;
 
-
-
-// Alterando o namespace para Edison.Trading.Api
-namespace Edison.Trading;
+namespace ProfitDLLClient;
 
 #region Struturas para exemplo
 public struct CandleTrade
@@ -59,7 +57,7 @@ public struct Trade
 }
 #endregion
 
-public partial class ProfitDLL
+public partial class DLLConnector
 {
     //////////////////////////////////////////////////////////////////////////////
     // Error Codes
@@ -117,8 +115,7 @@ public partial class ProfitDLL
     public static TAdjustHistoryCallbackV2 _adjustHistoryCallbackV2 = new TAdjustHistoryCallbackV2(AdjustHistoryCallbackV2);
     public static TConnectorOrderCallback _orderCallback = new TConnectorOrderCallback(OrderCallback);
     public static TConnectorAccountCallback _orderHistoryCallback = new TConnectorAccountCallback(OrderHistoryCallback);
-    public static TTradeCallbackV2 _TradeCallback = new TTradeCallbackV2(TradeCallback);
-    public static TTradeCallbackV2 _HistoryTradeCallback = new TTradeCallbackV2(HistoryTradeCallback);
+
     #endregion
 
     #region variables
@@ -994,12 +991,12 @@ public partial class ProfitDLL
     public static void Main(string[] args)
     {
         Console.Write("Chave de ativação: ");
-        string key = Console.ReadLine() ?? "";
+        string key = Console.ReadLine();
 
         Console.Write("Usuário: ");
-        string user = Console.ReadLine() ?? "";
+        string user = Console.ReadLine();
 
-        string password = ReadPassword() ?? "";
+        string password = ReadPassword();
 
         if (StartDLL(key, user, password) != NL_OK)
         {
