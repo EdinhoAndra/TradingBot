@@ -634,10 +634,12 @@ public partial class DLLConnector
     {
 
         WriteSync("Informe o ID do agente: ");
-        string agentInput = Console.ReadLine();
+        string? agentInputRaw = Console.ReadLine();
+        string agentInput = agentInputRaw ?? string.Empty;
 
         WriteSync("Informe a Flag: (0 - Normal, 1 - Abreviado): ");
-        string flagInput = Console.ReadLine();
+        string? flagInputRaw = Console.ReadLine();
+        string flagInput = flagInputRaw ?? string.Empty;
 
         if (!Int32.TryParse(agentInput, out int agentId))
         {
@@ -1081,7 +1083,8 @@ public partial class DLLConnector
                 {
                     WriteSync("Comando: ");
 
-                    var input = Console.ReadLine();
+                    string? inputRaw = Console.ReadLine();
+                    string input = inputRaw ?? string.Empty;
                     switch (input)
                     {
                         case "subscribe":
