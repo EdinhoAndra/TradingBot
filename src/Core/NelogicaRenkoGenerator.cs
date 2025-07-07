@@ -8,7 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
 
-namespace Edison.Trading.Core;
+
+namespace Edison.Trading.Core
+{
 
 
 
@@ -17,7 +19,9 @@ public enum RenkoDirection
     Up,
     Down
 }
-
+// Fim da classe NelogicaRenkoGenerator
+}
+// Fim do namespace Edison.Trading.Core
 public class RenkoBrick
 {
     public double Open { get; internal set; }
@@ -181,7 +185,7 @@ public class NelogicaRenkoGenerator
         }
     }
 
-    public void AddPrice(double currentPrice, SystemTime timestamp)
+    public virtual void AddPrice(double currentPrice, SystemTime timestamp)
     {
         if (_anchorPrice == null && !_bricks.Any())
         {

@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="NUnit" Version="4.2.2" />
     <PackageReference Include="NUnit.Analyzers" Version="4.4.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,7 +22,14 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Core\Edison.Trading.Core.csproj" />    
+    <ProjectReference Include="..\src\Core\Edison.Trading.Core.csproj" />
+    <ProjectReference Include="..\src\ProfitDLLClient\Edison.Trading.ProfitDLLClient.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="..\src\Core\lib\ProfitDLL.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
