@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Edison.Trading.Program</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- <Compile Include="Program.cs" /> removido, pois o SDK já inclui automaticamente todos os arquivos .cs -->
+    <!-- Exclui arquivos do Core do build deste projeto para evitar tipos duplicados -->
+    <Compile Remove="src\Core\**\*.cs" />
+    <Compile Remove="tests\**\*.cs" />
+    <Compile Remove="docs\**\*.cs" />
+    <ProjectReference Include="src\Core\Edison.Trading.Core.csproj" />
+    <None Include="ProfitDLL.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
