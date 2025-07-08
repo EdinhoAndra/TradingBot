@@ -467,29 +467,20 @@ public partial class DLLConnector
         public static void OrderHistoryCallback(TConnectorAccountIdentifier accountId) { }
         public static void TradeCallback(TConnectorAssetIdentifier a_Asset, nint a_pTrade, [MarshalAs(UnmanagedType.U4)] TConnectorTradeCallbackFlags a_nFlags) { }
         public static void HistoryTradeCallback(TConnectorAssetIdentifier a_Asset, nint a_pTrade, [MarshalAs(UnmanagedType.U4)] TConnectorTradeCallbackFlags a_nFlags) { }
-        public static void EmptyHistoryCallback(TAssetID AssetID, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int Side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
-            string TipoOrdem, string Conta, string Titular, string ClOrdID, string Status, string Date) { }
-        public static void EmptyOrderChangeCallback(TAssetID assetId, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int Side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
-            string TipoOrdem, string Conta, string Titular, string ClOrdID, string Status, string Date, string TextMessage) { }
-        public static void EmptyTradeCallback(TAssetID assetId, string date, uint tradeNumber, double price, double vol, int qtd, int buyAgent, int sellAgent, int tradeType, int bIsEdit) { }
-        public static void EmptyOfferBookCallback(TAssetID assetId, int nAction, int nPosition, int Side, int nQtd, int nAgent, long nOfferID, double sPrice, int bHasPrice, int bHasQtd, int bHasDate, int bHasOfferID, int bHasAgent, string date, IntPtr pArraySell, IntPtr pArrayBuy) { }
-        public static void EmptyHistoryTradeCallback(TAssetID assetId, string date, uint tradeNumber, double price, double vol, int qtd, int buyAgent, int sellAgent, int tradeType) { }
-        public static void EmptyProgressCallback(TAssetID assetId, int nProgress) { }
-
         // Empty callbacks used during initialization
-        private static void EmptyHistoryCallback(TAssetID assetId, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
+        public static void EmptyHistoryCallback(TAssetID assetId, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
             string tipoOrdem, string conta, string titular, string clOrdID, string status, string date) { }
 
-        private static void EmptyOrderChangeCallback(TAssetID assetId, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
+        public static void EmptyOrderChangeCallback(TAssetID assetId, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
             string tipoOrdem, string conta, string titular, string clOrdID, string status, string date, string textMessage) { }
 
-        private static void EmptyTradeCallback(TAssetID assetId, string date, uint tradeNumber, double price, double vol, int qtd, int buyAgent, int sellAgent, int tradeType, int bIsEdit) { }
+        public static void EmptyTradeCallback(TAssetID assetId, string date, uint tradeNumber, double price, double vol, int qtd, int buyAgent, int sellAgent, int tradeType, int bIsEdit) { }
 
-        private static void EmptyOfferBookCallback(TAssetID assetId, int nAction, int nPosition, int side, int nQtd, int nAgent, long nOfferID, double sPrice, int bHasPrice, int bHasQtd, int bHasDate, int bHasOfferID, int bHasAgent, string date, IntPtr pArraySell, IntPtr pArrayBuy) { }
+        public static void EmptyOfferBookCallback(TAssetID assetId, int nAction, int nPosition, int side, int nQtd, int nAgent, long nOfferID, double sPrice, int bHasPrice, int bHasQtd, int bHasDate, int bHasOfferID, int bHasAgent, string date, IntPtr pArraySell, IntPtr pArrayBuy) { }
 
-        private static void EmptyHistoryTradeCallback(TAssetID assetId, string date, uint tradeNumber, double price, double vol, int qtd, int buyAgent, int sellAgent, int tradeType) { }
+        public static void EmptyHistoryTradeCallback(TAssetID assetId, string date, uint tradeNumber, double price, double vol, int qtd, int buyAgent, int sellAgent, int tradeType) { }
 
-        private static void EmptyProgressCallback(TAssetID assetId, int nProgress) { }
+        public static void EmptyProgressCallback(TAssetID assetId, int nProgress) { }
 
         #region obj garbage KeepAlive
         public static TAssetListCallback _assetListCallback = new TAssetListCallback(AssetListCallback);
