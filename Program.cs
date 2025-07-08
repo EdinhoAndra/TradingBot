@@ -122,7 +122,7 @@ namespace Edison.Trading.Program
 
                     double lastClose;
                     RenkoDirection direction;
-                    if (renkoGen.TryLoadLastBrickFromDisk(out var lastBrick))
+                    if (renkoGen.TryLoadLastBrickFromDisk(out var lastBrick) && lastBrick is not null)
                     {
                         lastClose = lastBrick.Close;
                         direction = lastBrick.Direction;
