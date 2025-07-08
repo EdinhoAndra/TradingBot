@@ -186,11 +186,11 @@ public partial class DLLConnector
         var retVal = UnsubscribeTicker(split[0], split[1]);
         if (retVal == NL_OK)
         {
-            WriteSync("Subscribe com sucesso");
+            WriteSync("Unsubscribe com sucesso");
         }
         else
         {
-            WriteSync($"Erro no subscribe: {retVal}");
+            WriteSync($"Erro no unsubscribe: {retVal}");
         }
     }
 
