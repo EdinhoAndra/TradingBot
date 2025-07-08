@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8D626EA8-C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edison.Trading.Core", "src\Core\Edison.Trading.Core.csproj", "{C873373B-C98C-4A10-81D6-DAD6244BF0F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edison.Trading.Tests", "tests\Edison.Trading.Tests.csproj", "{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,18 @@ Global
 		{C873373B-C98C-4A10-81D6-DAD6244BF0F7}.Release|x64.Build.0 = Release|Any CPU
 		{C873373B-C98C-4A10-81D6-DAD6244BF0F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{C873373B-C98C-4A10-81D6-DAD6244BF0F7}.Release|x86.Build.0 = Release|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Debug|x64.Build.0 = Debug|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Debug|x86.Build.0 = Debug|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|x64.ActiveCfg = Release|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|x64.Build.0 = Release|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|x86.ActiveCfg = Release|Any CPU
+		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
