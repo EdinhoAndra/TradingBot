@@ -365,15 +365,15 @@ public partial class DLLConnector
         {
             retVal = ProfitDLL.DLLInitializeLogin(
                 key, user, password, _stateCallback,
-                new Edison.Trading.Core.THistoryCallBack(EmptyHistoryCallback),
-                new Edison.Trading.Core.TOrderChangeCallBack(EmptyOrderChangeCallback),
+                _emptyHistoryCallback,
+                _emptyOrderChangeCallback,
                 _accountCallback,
-                new Edison.Trading.Core.TTradeCallback(EmptyTradeCallback),
+                _emptyTradeCallback,
                 _newDailyCallback,
                 _priceBookCallback,
-                new Edison.Trading.Core.TOfferBookCallback(EmptyOfferBookCallback),
-                new Edison.Trading.Core.THistoryTradeCallback(EmptyHistoryTradeCallback),
-                new Edison.Trading.Core.TProgressCallBack(EmptyProgressCallback),
+                _emptyOfferBookCallback,
+                _emptyHistoryTradeCallback,
+                _emptyProgressCallback,
                 _newTinyBookCallBack
             );
         }
@@ -381,12 +381,12 @@ public partial class DLLConnector
         {
             retVal = ProfitDLL.DLLInitializeMarketLogin(
                 key, user, password, _stateCallback,
-                new Edison.Trading.Core.TTradeCallback(EmptyTradeCallback),
+                _emptyTradeCallback,
                 _newDailyCallback,
                 _priceBookCallback,
-                new Edison.Trading.Core.TOfferBookCallback(EmptyOfferBookCallback),
-                new Edison.Trading.Core.THistoryTradeCallback(EmptyHistoryTradeCallback),
-                new Edison.Trading.Core.TProgressCallBack(EmptyProgressCallback),
+                _emptyOfferBookCallback,
+                _emptyHistoryTradeCallback,
+                _emptyProgressCallback,
                 _newTinyBookCallBack
             );
         }
@@ -493,6 +493,13 @@ public partial class DLLConnector
         public static TConnectorAccountCallback _orderHistoryCallback = new TConnectorAccountCallback(OrderHistoryCallback);
         public static TConnectorTradeCallback _TradeCallback = new TConnectorTradeCallback(DLLConnector.TradeCallback);
         public static TConnectorTradeCallback _HistoryTradeCallback = new TConnectorTradeCallback(DLLConnector.HistoryTradeCallback);
+        // Delegates utilizados na inicialização. Mantidos para evitar GC.
+        public static THistoryCallBack _emptyHistoryCallback = new THistoryCallBack(EmptyHistoryCallback);
+        public static TOrderChangeCallBack _emptyOrderChangeCallback = new TOrderChangeCallBack(EmptyOrderChangeCallback);
+        public static TTradeCallback _emptyTradeCallback = new TTradeCallback(EmptyTradeCallback);
+        public static TOfferBookCallback _emptyOfferBookCallback = new TOfferBookCallback(EmptyOfferBookCallback);
+        public static THistoryTradeCallback _emptyHistoryTradeCallback = new THistoryTradeCallback(EmptyHistoryTradeCallback);
+        public static TProgressCallBack _emptyProgressCallback = new TProgressCallBack(EmptyProgressCallback);
         #endregion
 
         #region variables
