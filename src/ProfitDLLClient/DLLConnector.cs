@@ -58,7 +58,7 @@ public partial class DLLConnector
         string? input;
         do
         {
-            Console.Write("Código do conta (ex 1171:12345:1): ");
+            Console.Write("Código da conta (ex 1171:12345:1): ");
             input = Console.ReadLine();
         } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input, @"\d+:\d+(:\d+)?"));
 
@@ -290,7 +290,7 @@ public partial class DLLConnector
 
         do
         {
-            Console.Write("Código do conta (ex 1171:12345:1): ");
+            Console.Write("Código da conta (ex 1171:12345:1): ");
             input = Console.ReadLine();
         } while (string.IsNullOrWhiteSpace(input) || !Regex.IsMatch(input, @"\d+:\d+(:\d+)?"));
 
