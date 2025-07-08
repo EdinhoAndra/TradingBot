@@ -52,7 +52,7 @@ namespace Edison.Trading.ProfitDLLClient.Tests
             _monitor.RenkoTradeCallback(asset, tradePtr, 0);
 
             // Assert
-            // _mockRenkoGenerator.Verify(g => g.AddPrice(trade.Price, trade.TradeDate), Times.Once); // Não é possível garantir chamada devido à dependência nativa
+            _mockRenkoGenerator.Verify(g => g.AddPrice(trade.Price, trade.TradeDate), Times.Once);
             Assert.That(_monitor.GetLastDclose(), Is.EqualTo(trade.Price));
 
             Marshal.FreeHGlobal(tradePtr);
