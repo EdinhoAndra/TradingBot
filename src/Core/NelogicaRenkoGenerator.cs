@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Protobuf;
+using System.Diagnostics.CodeAnalysis;
 
 
 namespace Edison.Trading.Core
@@ -109,7 +110,7 @@ public class NelogicaRenkoGenerator
         _saveIntervalSeconds = saveIntervalSeconds;
     }
 
-    public bool TryLoadLastBrickFromDisk(out RenkoBrick? lastBrick)
+    public bool TryLoadLastBrickFromDisk([NotNullWhen(true)] out RenkoBrick? lastBrick)
     {
         lastBrick = null;
         if (!File.Exists(_saveFilePath))
