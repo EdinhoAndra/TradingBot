@@ -119,6 +119,32 @@ namespace Edison.Trading.Program
                     var parts = assetRaw.ToUpper().Split(':');
                     renkoGen = new NelogicaRenkoGenerator(15, 5.0);
                     renkoGen.ConfigureBuffer(200, "renko_rt.bin", 5);
+
+                    double lastClose;
+                    RenkoDirection direction;
+                    if (renkoGen.TryLoadLastBrickFromDisk(out var lastBrick))
+                    {
+                        lastClose = lastBrick.Close;
+                        direction = lastBrick.Direction;
+                        ProfitDLLClient.DLLConnector.WriteSync($"Último fechamento salvo: {lastClose}");
+                    }
+                    else
+                    {
+                        ProfitDLLClient.DLLConnector.WriteSync("Nenhum arquivo de renko salvo encontrado. Buscando dClose do servidor...");
+                        double dClose = 0;
+                        int ret = ProfitDLL.GetLastDailyClose(parts[0], parts[1], ref dClose, 0);
+                        if (ret != ProfitDLLClient.DLLConnector.NL_OK)
+                        {
+                            ProfitDLLClient.DLLConnector.WriteSync($"Erro ao obter dClose: {ret}");
+                        }
+                        lastClose = dClose;
+                        ProfitDLLClient.DLLConnector.WriteSync($"Último preço de fechamento: {lastClose}");
+                        ProfitDLLClient.DLLConnector.WriteSync("Informe a direção do último tijolo (up/down): ");
+                        string? dirInput = Console.ReadLine();
+                        direction = string.Equals(dirInput, "down", StringComparison.OrdinalIgnoreCase) ? RenkoDirection.Down : RenkoDirection.Up;
+                    }
+
+                    renkoGen.InitializeFromLastBrick(lastClose, direction);
                     renkoGen.StartPeriodicSave();
                     monitor = new RenkoTradeMonitor(parts[0], parts[1], 15, 5.0, renkoGen);
                     monitor.Start();

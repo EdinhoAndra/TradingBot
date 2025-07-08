@@ -47,7 +47,8 @@ namespace Edison.Trading.ProfitDLLClient
         public void Stop()
         {
             ProfitDLL.UnsubscribeTicker(_symbol, _exchange);
-            // Não há método para remover callback, mas pode-se sobrescrever se necessário
+            ProfitDLL.SetTradeCallbackV2(null);
+            _renkoGenerator.OnCloseBrick -= HandleNewBrick;
         }
 
         /// <summary>
