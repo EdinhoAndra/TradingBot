@@ -235,4 +235,24 @@ public class NelogicaRenkoGeneratorTests
         File.Delete(csvPath);
     }
 
+    [Test]
+    public void OnCloseBrick_Should_Fire_After_GCCollect()
+    {
+        var generator = new NelogicaRenkoGenerator(10, 5.0);
+        int count = 0;
+        generator.OnCloseBrick += _ => count++;
+
+        var ts = SystemTime.FromDateTime(DateTime.UtcNow);
+        generator.AddPrice(1000, ts);
+        generator.AddPrice(1000 + generator.ThresholdRegularMove, ts);
+        Assert.That(count, Is.EqualTo(1));
+
+        GC.Collect();
+        GC.WaitForPendingFinalizers();
+
+        generator.AddPrice(1000 + 2 * generator.ThresholdRegularMove, ts);
+
+        Assert.That(count, Is.EqualTo(2));
+    }
+
 }
