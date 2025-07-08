@@ -91,7 +91,7 @@ namespace Edison.Trading.ProfitDLLClient
         }
 
         /// <summary>
-        /// Atualiza o RenkoGenerator de forma thread-safe (caso precise ser chamado externamente).
+        /// Mantido apenas para compatibilidade e atualmente não executa nenhuma ação.
         /// </summary>
         public void UpdateRenko()
         {
