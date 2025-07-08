@@ -15,6 +15,8 @@
     <Compile Remove="src\Core\**\*.cs" />
     <Compile Remove="tests\**\*.cs" />
     <Compile Remove="docs\**\*.cs" />
+    <!-- Exclude generated files from nested project obj folders -->
+    <Compile Remove="**\obj\**\*.cs" />
     <ProjectReference Include="src\Core\Edison.Trading.Core.csproj" />
     <None Include="ProfitDLL.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
