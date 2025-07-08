@@ -57,5 +57,38 @@ namespace Edison.Trading.ProfitDLLClient.Tests
 
             Marshal.FreeHGlobal(tradePtr);
         }
+
+        [Test]
+        public void RenkoTradeCallback_Should_Survive_GarbageCollections()
+        {
+            var asset = new TConnectorAssetIdentifier { Ticker = _symbol, Exchange = _exchange };
+            var trade = new TConnectorTrade { Version = 0 };
+            var ptr = Marshal.AllocHGlobal(Marshal.SizeOf<TConnectorTrade>());
+            Marshal.StructureToPtr(trade, ptr, false);
+
+            int counter = 0;
+            _mockProfitDll.Setup(p => p.TranslateTrade(ptr, ref It.Ref<TConnectorTrade>.IsAny))
+                .Returns((nint _, ref TConnectorTrade t) =>
+                {
+                    t.Price = counter;
+                    t.TradeDate = SystemTime.FromDateTime(DateTime.UtcNow);
+                    counter++;
+                    return DLLConnector.NL_OK;
+                });
+
+            int iterations = 100;
+            for (int i = 0; i < iterations; i++)
+            {
+                _monitor.RenkoTradeCallback(asset, ptr, 0);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+
+            _mockRenkoGenerator.Verify(g => g.AddPrice(It.IsAny<double>(), It.IsAny<SystemTime>()), Times.Exactly(iterations));
+            Assert.That(_monitor.GetLastDclose(), Is.EqualTo(iterations - 1));
+
+            Marshal.FreeHGlobal(ptr);
+        }
+
     }
 }
