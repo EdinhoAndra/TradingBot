@@ -109,6 +109,56 @@ public class NelogicaRenkoGenerator
         _saveIntervalSeconds = saveIntervalSeconds;
     }
 
+    public bool TryLoadLastBrickFromDisk(out RenkoBrick? lastBrick)
+    {
+        lastBrick = null;
+        if (!File.Exists(_saveFilePath))
+            return false;
+        try
+        {
+            using var fs = File.OpenRead(_saveFilePath);
+            var proto = RenkoBufferProto.Parser.ParseFrom(fs);
+            if (proto.Bricks.Count == 0)
+                return false;
+            var p = proto.Bricks[^1];
+            var dt = new DateTime(p.Timestamp, DateTimeKind.Utc);
+            lastBrick = new RenkoBrick
+            {
+                Open = p.Open,
+                High = p.High,
+                Low = p.Low,
+                Close = p.Close,
+                Direction = (RenkoDirection)p.Direction,
+                Timestamp = SystemTime.FromDateTime(dt)
+            };
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public void InitializeFromLastBrick(double close, RenkoDirection direction)
+    {
+        _bricks.Clear();
+        var ts = SystemTime.FromDateTime(DateTime.UtcNow);
+        var last = new RenkoBrick
+        {
+            Open = close,
+            High = close,
+            Low = close,
+            Close = close,
+            Direction = direction,
+            Timestamp = ts
+        };
+        _bricks.Add(last);
+        _currentSwingHigh = close;
+        _currentSwingLow = close;
+        _anchorPrice = null;
+        _anchorTimestamp = null;
+    }
+
     public void StartPeriodicSave(CancellationToken? externalToken = null)
     {
         _cts = CancellationTokenSource.CreateLinkedTokenSource(externalToken ?? CancellationToken.None);
