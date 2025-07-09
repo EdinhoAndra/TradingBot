@@ -69,7 +69,11 @@ namespace Edison.Trading.Core
 
             var inputs = new List<NamedOnnxValue> { NamedOnnxValue.CreateFromTensor(inputName, inputTensor) };
             using var results = _session.Run(inputs);
-            var rawScores = results.First().AsEnumerable<float>().ToArray();
+            var output = results.Last().AsEnumerable<float>().ToArray();
+            int cols = output.Length / featureMatrix.Length;
+            var rawScores = new float[featureMatrix.Length];
+            for (int i = 0; i < featureMatrix.Length; i++)
+                rawScores[i] = output[i * cols + 1];
 
             var calibrated = new float[rawScores.Length];
             for (int i = 0; i < rawScores.Length; i++)
@@ -90,7 +94,8 @@ namespace Edison.Trading.Core
             var inputTensor = new DenseTensor<float>(features, new[] { 1, features.Length });
             var inputs = new List<NamedOnnxValue> { NamedOnnxValue.CreateFromTensor(inputName, inputTensor) };
             using var results = _session.Run(inputs);
-            return results.First().AsEnumerable<float>().First();
+            var probs = results.Last().AsEnumerable<float>().ToArray();
+            return probs.Length == 2 ? probs[1] : probs.First();
         }
 
         private float ApplyCalibration(float raw)
@@ -119,7 +124,10 @@ namespace Edison.Trading.Core
         public void LoadCalibration(string path)
         {
             var json = File.ReadAllText(path);
-            var data = JsonSerializer.Deserialize<CalibrationData>(json);
+            var data = JsonSerializer.Deserialize<CalibrationData>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
             if (data == null)
                 throw new InvalidOperationException("Invalid calibration file.");
 

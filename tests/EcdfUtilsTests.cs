@@ -12,9 +12,9 @@ public class EcdfUtilsTests
     [Test]
     public void GenerateEcdfDecisions_Should_GenerateRowsWithValidValues()
     {
-        string root = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", ".."));
-        string onnxPath = Path.Combine(root, "docs", "pipeline_lightgbm.onnx");
-        string calPath = Path.Combine(root, "docs", "isotonic_calibrator.json");
+        string root = Path.GetFullPath(Path.Combine(TestContext.CurrentContext.TestDirectory, "..", "..", "..", ".."));
+        string onnxPath = Path.Combine(root, "files", "pipeline_lightgbm.onnx");
+        string calPath = Path.Combine(root, "files", "isotonic_calibrator.json");
         var calibrator = new IsotonicCalibrator(onnxPath, calPath);
 
         // create random data with 11 features
