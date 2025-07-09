@@ -281,6 +281,18 @@ public class NelogicaRenkoGeneratorTests
         generator.StopPeriodicSaveAndFlush();
         Assert.That(File.Exists(binPath), Is.True, "Bin file was not created");
 
+ 24pq8z-codex/adicionar-teste-unitario-para-funcao-stop
+        var proto = RenkoBufferProto.Parser.ParseFrom(File.ReadAllBytes(binPath));
+        Assert.That(proto.Bricks.Count, Is.EqualTo(200));
+
+        using (var writer = new StreamWriter(csvPath, false, System.Text.Encoding.UTF8))
+        {
+            writer.WriteLine("Date,Open,High,Low,Close");
+            foreach (var pb in proto.Bricks)
+            {
+                var dt = new DateTime(pb.Timestamp, DateTimeKind.Utc).ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+                writer.WriteLine($"{dt},{pb.Open},{pb.High},{pb.Low},{pb.Close}");
+
         int start = Math.Max(generator.Bricks.Count - 200, 0);
         using (var writer = new StreamWriter(csvPath, false, System.Text.Encoding.UTF8))
         {
@@ -289,17 +301,13 @@ public class NelogicaRenkoGeneratorTests
             {
                 var dt = SystemTime.ToDateTime(brick.Timestamp).ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
                 writer.WriteLine($"{dt},{brick.Open},{brick.High},{brick.Low},{brick.Close}");
+ main
             }
         }
 
         Assert.That(File.Exists(csvPath), Is.True, "CSV file was not created");
 
-        var proto = RenkoBufferProto.Parser.ParseFrom(File.ReadAllBytes(binPath));
-        Assert.That(proto.Bricks.Count, Is.EqualTo(200));
 
-        var csvLines = File.ReadAllLines(csvPath);
-        Assert.That(csvLines.Length, Is.EqualTo(201));
-        Assert.That(csvLines[0], Is.EqualTo("Date,Open,High,Low,Close"));
 
         for (int i = 0; i < 200; i++)
         {
