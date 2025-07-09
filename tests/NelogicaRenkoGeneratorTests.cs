@@ -304,7 +304,11 @@ public class NelogicaRenkoGeneratorTests
         {
             var pb = proto.Bricks[i];
             var parts = csvLines[i + 1].Split(',');
-            var dt = DateTime.ParseExact(parts[0], "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            var dt = DateTime.ParseExact(
+                parts[0],
+                "yyyy-MM-dd HH:mm:ss.fff",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal);
             double open = double.Parse(parts[1], CultureInfo.InvariantCulture);
             double high = double.Parse(parts[2], CultureInfo.InvariantCulture);
             double low = double.Parse(parts[3], CultureInfo.InvariantCulture);
