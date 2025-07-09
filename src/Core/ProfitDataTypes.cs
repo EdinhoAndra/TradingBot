@@ -439,7 +439,15 @@ public struct SystemTime
 
     public static DateTime ToDateTime(SystemTime date)
     {
-        return new DateTime(date.Year, date.Month, date.Day, date.Hour, date.Minute, date.Second, date.Milliseconds);
+        return new DateTime(
+            date.Year,
+            date.Month,
+            date.Day,
+            date.Hour,
+            date.Minute,
+            date.Second,
+            date.Milliseconds,
+            DateTimeKind.Utc);
     }
 
     public override string ToString() => ToDateTime(this).ToString();
