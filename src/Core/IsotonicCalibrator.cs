@@ -67,7 +67,7 @@ namespace Edison.Trading.Core
                     inputTensor[i, j] = featureMatrix[i][j];
             }
 
-            using var inputs = new List<NamedOnnxValue> { NamedOnnxValue.CreateFromTensor(inputName, inputTensor) };
+            var inputs = new List<NamedOnnxValue> { NamedOnnxValue.CreateFromTensor(inputName, inputTensor) };
             using var results = _session.Run(inputs);
             var rawScores = results.First().AsEnumerable<float>().ToArray();
 
@@ -88,7 +88,7 @@ namespace Edison.Trading.Core
                 throw new ArgumentException("Número de features incorreto.");
 
             var inputTensor = new DenseTensor<float>(features, new[] { 1, features.Length });
-            using var inputs = new List<NamedOnnxValue> { NamedOnnxValue.CreateFromTensor(inputName, inputTensor) };
+            var inputs = new List<NamedOnnxValue> { NamedOnnxValue.CreateFromTensor(inputName, inputTensor) };
             using var results = _session.Run(inputs);
             return results.First().AsEnumerable<float>().First();
         }
