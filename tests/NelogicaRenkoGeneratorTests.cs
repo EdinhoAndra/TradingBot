@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using Edison.Trading.Core;
+using System.Globalization;
 
 
 namespace Edison.Trading.Tests;
@@ -253,6 +254,75 @@ public class NelogicaRenkoGeneratorTests
         generator.AddPrice(1000 + 2 * generator.ThresholdRegularMove, ts);
 
         Assert.That(count, Is.EqualTo(2));
+    }
+
+    [Test]
+    public void StopRenko_Should_GenerateCsvFromBin()
+    {
+        int r = 15;
+        double tickSize = 5.0;
+        int bricksToGenerate = 205;
+        string binPath = Path.Combine(Path.GetTempPath(), $"renko_stop_{Guid.NewGuid()}.bin");
+        string csvPath = Path.Combine(Path.GetTempPath(), $"renko_stop_{Guid.NewGuid()}.csv");
+
+        var generator = new NelogicaRenkoGenerator(r, tickSize);
+        generator.ConfigureBuffer(200, binPath, 60);
+
+        double initialPrice = 100000;
+        int totalTicks = (bricksToGenerate + 5) * r;
+        var timestamp = SystemTime.FromDateTime(new DateTime(2025, 6, 28, 10, 0, 0));
+        for (int i = 0; i < totalTicks; i++)
+        {
+            generator.AddPrice(initialPrice + i * tickSize, timestamp);
+        }
+
+        Assert.That(generator.Bricks.Count, Is.GreaterThanOrEqualTo(bricksToGenerate));
+
+        generator.StopPeriodicSaveAndFlush();
+        Assert.That(File.Exists(binPath), Is.True, "Bin file was not created");
+
+        int start = Math.Max(generator.Bricks.Count - 200, 0);
+        using (var writer = new StreamWriter(csvPath, false, System.Text.Encoding.UTF8))
+        {
+            writer.WriteLine("Date,Open,High,Low,Close");
+            foreach (var brick in generator.Bricks.Skip(start))
+            {
+                var dt = SystemTime.ToDateTime(brick.Timestamp).ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+                writer.WriteLine($"{dt},{brick.Open},{brick.High},{brick.Low},{brick.Close}");
+            }
+        }
+
+        Assert.That(File.Exists(csvPath), Is.True, "CSV file was not created");
+
+        var proto = RenkoBufferProto.Parser.ParseFrom(File.ReadAllBytes(binPath));
+        Assert.That(proto.Bricks.Count, Is.EqualTo(200));
+
+        var csvLines = File.ReadAllLines(csvPath);
+        Assert.That(csvLines.Length, Is.EqualTo(201));
+        Assert.That(csvLines[0], Is.EqualTo("Date,Open,High,Low,Close"));
+
+        for (int i = 0; i < 200; i++)
+        {
+            var pb = proto.Bricks[i];
+            var parts = csvLines[i + 1].Split(',');
+            var dt = DateTime.ParseExact(parts[0], "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            double open = double.Parse(parts[1], CultureInfo.InvariantCulture);
+            double high = double.Parse(parts[2], CultureInfo.InvariantCulture);
+            double low = double.Parse(parts[3], CultureInfo.InvariantCulture);
+            double close = double.Parse(parts[4], CultureInfo.InvariantCulture);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(open, Is.EqualTo(pb.Open));
+                Assert.That(high, Is.EqualTo(pb.High));
+                Assert.That(low, Is.EqualTo(pb.Low));
+                Assert.That(close, Is.EqualTo(pb.Close));
+                Assert.That(dt.ToUniversalTime().Ticks, Is.EqualTo(pb.Timestamp));
+            });
+        }
+
+        File.Delete(binPath);
+        File.Delete(csvPath);
     }
 
 }
