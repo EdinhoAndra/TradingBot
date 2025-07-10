@@ -190,10 +190,10 @@ public struct TConnectorAccountIdentifierOut
 {
     public byte Version;
     public int BrokerID;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 100)]
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 100)]
     public string AccountID;
     public int AccountIDLength;
-    [MarshalAs(UnmanagedType.ByValArray, SizeConst = 100)]
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 100)]
     public string SubAccountID;
     public int SubAccountIDLength;
     public long Reserved;
