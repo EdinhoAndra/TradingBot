@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using Edison.Trading.Core;
 using Edison.Trading.Indicators;
@@ -28,7 +29,9 @@ namespace Edison.Trading.ProfitDLLClient
             _profitDll = profitDll ?? new ProfitDLLWrapper();
 
             // Buffer persistente de tijolos
-            _brickBuffer = new RenkoBrickBuffer(200, $"renko_{symbol}_{exchange}.bin");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                                           $"renko_{symbol}_{exchange}.bin");
+            _brickBuffer = new RenkoBrickBuffer(200, filePath);
 
             // A cada fechamento de tijolo o buffer é atualizado
             _renkoGenerator.OnCloseBrick += _brickBuffer.AddBrick;
