@@ -88,7 +88,8 @@ namespace Edison.Trading.ProfitDLLClient
         private void HandleNewBrick(RenkoBrick brick)
         {
             // Exemplo: log, estratégia, etc.
-            Console.WriteLine($"Novo tijolo: {brick.Direction} | {brick.Open} -> {brick.Close}");
+            var ts = SystemTime.ToDateTime(brick.Timestamp).ToString("HH:mm:ss.fff");
+            Console.WriteLine($"Novo tijolo: {brick.Direction} | {brick.Open} -> {brick.Close} @ {ts}");
         }
 
         /// <summary>
