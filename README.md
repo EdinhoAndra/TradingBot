@@ -44,7 +44,8 @@ dotnet test
 ```
 
 
-### Loading historical data in Renko mode
+### Starting Renko mode
 
-When using the interactive console, the `start renko` command now prompts for an optional start date (`dd/MM/yyyy HH:mm:ss`).
-If provided, historical trades from that moment until now are loaded before subscribing to real-time data.
+The `start renko` command no longer asks for a history start date. Renko generation begins with the
+current market trades only. If no previously saved Renko data is found, you will be asked for the
+direction (`up` or `down`) of the last brick so the generator can continue from the current price.
