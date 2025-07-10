@@ -417,9 +417,9 @@ public class NelogicaRenkoGenerator
                 _renkoBuffer.TryDequeue(out _);
         }
 
-        // Save and calculate features concurrently
-        _ = Task.Run(() => AppendBrickToFile(newBrick));
-        _ = Task.Run(() => OnCloseBrick?.Invoke(newBrick));
+        // Persist brick and notify synchronously
+        AppendBrickToFile(newBrick);
+        OnCloseBrick?.Invoke(newBrick);
     }
 
     private void AddBricksSeries(double openPrice, double totalMovement, SystemTime timestamp)
