@@ -275,7 +275,9 @@ public class NelogicaRenkoGenerator
     {
         try
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(_saveFilePath)!);
+            string? dir = Path.GetDirectoryName(_saveFilePath);
+            if (!string.IsNullOrEmpty(dir))
+                Directory.CreateDirectory(dir);
             using var fs = new FileStream(_saveFilePath, FileMode.Append, FileAccess.Write, FileShare.Read);
             var proto = new RenkoBrickProto
             {
