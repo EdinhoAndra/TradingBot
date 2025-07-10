@@ -121,7 +121,10 @@ namespace Edison.Trading.Program
                     }
                     var parts = assetRaw.ToUpper().Split(':');
                     renkoGen = new NelogicaRenkoGenerator(15, 5.0);
-                    renkoGen.ConfigureBuffer(200, "renko_rt.bin");
+                    
+                    string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "renko_rt.bin");
+                    renkoGen.ConfigureBuffer(200, filePath);
+                    //renkoGen.ConfigureBuffer(200, "renko_rt.bin");
 
                     double lastClose;
                     RenkoDirection direction;

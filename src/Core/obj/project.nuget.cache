@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "+z6YqgYf7OU=",
+  "dgSpecHash": "48upYvRrtfGMV+3NcIWjIP2vyhIh/UhyDCepaB4ONVCw+OVZ6j151gjr5QKb9SUzY2nK6383vZumD+yo0eF4WQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Edinho\\Projetos\\CSharp\\TradingBot\\src\\Core\\Edison.Trading.Core.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Edinho\\.nuget\\packages\\google.protobuf\\3.31.1\\google.protobuf.3.31.1.nupkg.sha512"
+    "C:\\Users\\Edinho\\.nuget\\packages\\google.protobuf\\3.31.1\\google.protobuf.3.31.1.nupkg.sha512",
+    "C:\\Users\\Edinho\\.nuget\\packages\\microsoft.ml.onnxruntime\\1.17.3\\microsoft.ml.onnxruntime.1.17.3.nupkg.sha512",
+    "C:\\Users\\Edinho\\.nuget\\packages\\microsoft.ml.onnxruntime.managed\\1.17.3\\microsoft.ml.onnxruntime.managed.1.17.3.nupkg.sha512",
+    "C:\\Users\\Edinho\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512"
   ],
   "logs": []
 }
