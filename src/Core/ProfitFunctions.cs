@@ -294,6 +294,21 @@ public class ProfitDLL
     [DllImport(dll_path, CallingConvention = CallingConvention.StdCall)]
     public static extern int SetActiveAccount([MarshalAs(UnmanagedType.LPWStr)] string accountId);
 
+    /// <summary>
+    /// Tenta definir a conta ativa na DLL. Caso a função não exista, retorna false.
+    /// </summary>
+    public static bool TrySetActiveAccount(string accountId)
+    {
+        try
+        {
+            return SetActiveAccount(accountId) == 0;
+        }
+        catch (EntryPointNotFoundException)
+        {
+            return false;
+        }
+    }
+
     public static string[] ListAccounts()
     {
         int count = GetAccountCount();

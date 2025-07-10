@@ -160,7 +160,10 @@ namespace Edison.Trading.ProfitDLLClient
                 return;
             }
 
-            ProfitDLL.SetActiveAccount(chosen);
+            if (!ProfitDLL.TrySetActiveAccount(chosen))
+            {
+                Console.WriteLine("⚠️ Função SetActiveAccount não disponível. Conta selecionada apenas localmente.");
+            }
             _selectedAccount = chosen;
             Console.WriteLine($"Conta ativa: {chosen}");
         }
