@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edison.Trading.Core", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edison.Trading.Tests", "tests\Edison.Trading.Tests.csproj", "{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Edison.Trading.Indicators", "src\Indicators\Edison.Trading.Indicators.csproj", "{BF966668-20C7-4072-8F73-68A8793AD079}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,18 @@ Global
 		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|x64.Build.0 = Release|Any CPU
 		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|x86.ActiveCfg = Release|Any CPU
 		{D2C49A39-7CC3-460B-99C3-F9D1DA522EEC}.Release|x86.Build.0 = Release|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Debug|x64.Build.0 = Debug|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Debug|x86.Build.0 = Debug|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Release|x64.ActiveCfg = Release|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Release|x64.Build.0 = Release|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Release|x86.ActiveCfg = Release|Any CPU
+		{BF966668-20C7-4072-8F73-68A8793AD079}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,5 +80,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8D626EA8-CB54-BC41-363A-217881BEBA6E} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{C873373B-C98C-4A10-81D6-DAD6244BF0F7} = {8D626EA8-CB54-BC41-363A-217881BEBA6E}
+		{BF966668-20C7-4072-8F73-68A8793AD079} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal

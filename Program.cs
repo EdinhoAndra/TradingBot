@@ -118,7 +118,7 @@ namespace Edison.Trading.Program
                     }
                     var parts = assetRaw.ToUpper().Split(':');
                     renkoGen = new NelogicaRenkoGenerator(15, 5.0);
-                    renkoGen.ConfigureBuffer(200, "renko_rt.bin", 5);
+                    renkoGen.ConfigureBuffer(200, "renko_rt.bin");
 
                     double lastClose;
                     RenkoDirection direction;
@@ -145,7 +145,6 @@ namespace Edison.Trading.Program
                     }
 
                     renkoGen.InitializeFromLastBrick(lastClose, direction);
-                    renkoGen.StartPeriodicSave();
                     monitor = new RenkoTradeMonitor(parts[0], parts[1], 15, 5.0, renkoGen);
                     monitor.Start();
                     ProfitDLLClient.DLLConnector.WriteSync("🔄 Monitor Renko iniciado. Use 'stop renko' para parar.");
@@ -157,7 +156,7 @@ namespace Edison.Trading.Program
                         return;
                     }
                     monitor.Stop();
-                    renkoGen.StopPeriodicSaveAndFlush();
+                    renkoGen.PersistBuffer();
                     ExportRenkoCsv(renkoGen, "renko_final.csv", 200);
                     ProfitDLLClient.DLLConnector.WriteSync("⏹ Monitor Renko parado e CSV salvo em renko_final.csv");
                     monitor = null;
