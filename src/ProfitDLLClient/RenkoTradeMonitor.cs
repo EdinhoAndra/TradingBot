@@ -47,6 +47,13 @@ namespace Edison.Trading.ProfitDLLClient
         public void Start()
         {
             ProfitDLL.SubscribeTicker(_symbol, _exchange);
+            // Desativa o recebimento de trades históricos para evitar gerar
+            // vários tijolos com dados passados. O manual da ProfitDLL
+            // descreve que SetHistoryTradeCallbackV2 é a callback responsável
+            // por enviar histórico de trades, sinalizando o último pacote com a
+            // flag TC_LAST_PACKET. Para ignorar esse histórico, definimos a
+            // callback como null.
+            ProfitDLL.SetHistoryTradeCallbackV2(null!);
             ProfitDLL.SetTradeCallbackV2(_dedicatedTradeCallback);
         }
 
