@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using Edison.Trading.Core;
+using Edison.Trading.Indicators;
 
 namespace Edison.Trading.ProfitDLLClient
 {
@@ -10,12 +11,14 @@ namespace Edison.Trading.ProfitDLLClient
     public class RenkoTradeMonitor
     {
         private readonly NelogicaRenkoGenerator _renkoGenerator;
+        private readonly RenkoBrickBuffer _brickBuffer;
         private readonly IProfitDLL _profitDll;
         private readonly TConnectorTradeCallback _dedicatedTradeCallback;
         private readonly string _symbol;
         private readonly string _exchange;
         private readonly object _lock = new object();
         private double _lastDclose;
+        private string? _selectedAccount;
 
         public RenkoTradeMonitor(string symbol, string exchange, int r, double tickSize, NelogicaRenkoGenerator? renkoGenerator = null, IProfitDLL? profitDll = null)
         {
@@ -24,8 +27,11 @@ namespace Edison.Trading.ProfitDLLClient
             _renkoGenerator = renkoGenerator ?? new NelogicaRenkoGenerator(r, tickSize);
             _profitDll = profitDll ?? new ProfitDLLWrapper();
 
-            // Configuração do buffer e eventos (opcional)
-            _renkoGenerator.ConfigureBuffer(200, $"renko_{symbol}_{exchange}.bin", 60);
+            // Buffer persistente de tijolos
+            _brickBuffer = new RenkoBrickBuffer(200, $"renko_{symbol}_{exchange}.bin");
+
+            // A cada fechamento de tijolo o buffer é atualizado
+            _renkoGenerator.OnCloseBrick += _brickBuffer.AddBrick;
             _renkoGenerator.OnCloseBrick += HandleNewBrick;
 
             // Callback dedicado para Renko
@@ -48,6 +54,7 @@ namespace Edison.Trading.ProfitDLLClient
         {
             ProfitDLL.UnsubscribeTicker(_symbol, _exchange);
             ProfitDLL.SetTradeCallbackV2(null);
+            _renkoGenerator.OnCloseBrick -= _brickBuffer.AddBrick;
             _renkoGenerator.OnCloseBrick -= HandleNewBrick;
         }
 
@@ -100,6 +107,61 @@ namespace Edison.Trading.ProfitDLLClient
             {
                 // _renkoGenerator.Update(); // Removido pois não existe mais
             }
+        }
+
+        /// <summary>
+        /// Extrai as séries de tijolos presentes no buffer.
+        /// </summary>
+        public void ExtractSeries(out Memory<DateTime> timestamps, out Memory<double> open,
+            out Memory<double> high, out Memory<double> low, out Memory<double> close)
+        {
+            _brickBuffer.ExtractSeries(out timestamps, out open, out high, out low, out close);
+        }
+
+        /// <summary>
+        /// Permite ao usuário escolher a conta ativa via Console.
+        /// </summary>
+        public void SelectAccount()
+        {
+            var ids = ProfitDLL.ListAccounts();
+            if (ids.Length == 0)
+            {
+                Console.WriteLine("Nenhuma conta disponível.");
+                return;
+            }
+            for (int i = 0; i < ids.Length; i++)
+            {
+                Console.WriteLine($"{i}: {ids[i]}");
+            }
+
+            Console.Write("Selecione a conta (índice ou nome): ");
+            string? input = Console.ReadLine();
+            string? chosen = null;
+            if (int.TryParse(input, out int idx) && idx >= 0 && idx < ids.Length)
+            {
+                chosen = ids[idx];
+            }
+            else
+            {
+                foreach (var id in ids)
+                {
+                    if (string.Equals(id, input, StringComparison.OrdinalIgnoreCase))
+                    {
+                        chosen = id;
+                        break;
+                    }
+                }
+            }
+
+            if (chosen == null)
+            {
+                Console.WriteLine("Conta inválida.");
+                return;
+            }
+
+            ProfitDLL.SetActiveAccount(chosen);
+            _selectedAccount = chosen;
+            Console.WriteLine($"Conta ativa: {chosen}");
         }
     }
 }

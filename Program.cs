@@ -146,6 +146,7 @@ namespace Edison.Trading.Program
 
                     renkoGen.InitializeFromLastBrick(lastClose, direction);
                     monitor = new RenkoTradeMonitor(parts[0], parts[1], 15, 5.0, renkoGen);
+                    monitor.SelectAccount();
                     monitor.Start();
                     ProfitDLLClient.DLLConnector.WriteSync("🔄 Monitor Renko iniciado. Use 'stop renko' para parar.");
                     break;
