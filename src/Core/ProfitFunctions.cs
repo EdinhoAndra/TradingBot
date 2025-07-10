@@ -290,4 +290,34 @@ public class ProfitDLL
 
     [DllImport(dll_path, CallingConvention = CallingConvention.StdCall)]
     public static extern int GetAgentName(int a_AgentLen, int a_AgentID, [MarshalAs(UnmanagedType.LPWStr)] StringBuilder AgentName, int a_shortFlag);
+
+    [DllImport(dll_path, CallingConvention = CallingConvention.StdCall)]
+    public static extern int SetActiveAccount([MarshalAs(UnmanagedType.LPWStr)] string accountId);
+
+    public static string[] ListAccounts()
+    {
+        int count = GetAccountCount();
+        if (count <= 0)
+            return Array.Empty<string>();
+
+        var arr = new TConnectorAccountIdentifierOut[count];
+        int found = GetAccounts(0, 0, count, arr);
+        var result = new string[found];
+        for (int i = 0; i < found; i++)
+        {
+            var a = arr[i];
+            string id = a.AccountIDLength > 0 && a.AccountID.Length >= a.AccountIDLength
+                ? a.AccountID.Substring(0, a.AccountIDLength)
+                : a.AccountID;
+            if (!string.IsNullOrWhiteSpace(a.SubAccountID))
+            {
+                string sub = a.SubAccountIDLength > 0 && a.SubAccountID.Length >= a.SubAccountIDLength
+                    ? a.SubAccountID.Substring(0, a.SubAccountIDLength)
+                    : a.SubAccountID;
+                id += $":{sub}";
+            }
+            result[i] = id;
+        }
+        return result;
+    }
 }
