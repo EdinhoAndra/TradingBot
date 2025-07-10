@@ -273,6 +273,32 @@ public partial class DLLConnector
         }
     }
 
+    /// <summary>
+    /// Retrieves history trades for the specified interval.
+    /// </summary>
+    public static IList<Trade> LoadHistoryTrades(string ticker, string exchange, DateTime start, DateTime end)
+    {
+        lock (HistLock)
+        {
+            HistTraders.Clear();
+        }
+
+        HistoryEvent.Reset();
+        int retVal = GetHistoryTrades(ticker, exchange, start.ToString(dateFormat), end.ToString(dateFormat));
+        if (retVal != NL_OK)
+        {
+            WriteSync($"Erro no GetHistoryTrades: {retVal}");
+            return Array.Empty<Trade>();
+        }
+
+        HistoryEvent.WaitOne(TimeSpan.FromSeconds(30));
+
+        lock (HistLock)
+        {
+            return HistTraders.ToList();
+        }
+    }
+
     public static void RequestOrder()
     {
         WriteSync("Informe um ClOrdId: ");
@@ -518,7 +544,24 @@ public partial class DLLConnector
         public static void OrderCallback(TConnectorOrderIdentifier orderId) { }
         public static void OrderHistoryCallback(TConnectorAccountIdentifier accountId) { }
         public static void TradeCallback(TConnectorAssetIdentifier a_Asset, nint a_pTrade, [MarshalAs(UnmanagedType.U4)] TConnectorTradeCallbackFlags a_nFlags) { }
-        public static void HistoryTradeCallback(TConnectorAssetIdentifier a_Asset, nint a_pTrade, [MarshalAs(UnmanagedType.U4)] TConnectorTradeCallbackFlags a_nFlags) { }
+        public static void HistoryTradeCallback(TConnectorAssetIdentifier a_Asset, nint a_pTrade, [MarshalAs(UnmanagedType.U4)] TConnectorTradeCallbackFlags a_nFlags)
+        {
+            var trade = new TConnectorTrade { Version = 0 };
+            if (TranslateTrade(a_pTrade, ref trade) == NL_OK)
+            {
+                var date = SystemTime.ToDateTime(trade.TradeDate).ToString(dateFormat, provider);
+                var newTrade = new Trade(trade.Price, trade.Volume, (int)trade.Quantity, $"{a_Asset.Ticker}:{a_Asset.Exchange}", date);
+                lock (HistLock)
+                {
+                    HistTraders.Enqueue(newTrade);
+                }
+            }
+
+            if (a_nFlags.HasFlag(TConnectorTradeCallbackFlags.TC_LAST_PACKET))
+            {
+                HistoryEvent.Set();
+            }
+        }
         // Empty callbacks used during initialization
         public static void EmptyHistoryCallback(TAssetID assetId, int nCorretora, int nQtd, int nTradedQtd, int nLeavesQtd, int side, double sPrice, double sStopPrice, double sAvgPrice, long nProfitID,
             string tipoOrdem, string conta, string titular, string clOrdID, string status, string date) { }
@@ -565,6 +608,7 @@ public partial class DLLConnector
         private static readonly object TradeLock = new object();
         public static Queue<Trade> HistTraders = new Queue<Trade>();
         private static readonly object HistLock = new object();
+        private static readonly AutoResetEvent HistoryEvent = new(false);
 
         public static List<TGroupPrice> m_lstPriceSell = new List<TGroupPrice>();
         public static List<TGroupPrice> m_lstPriceBuy = new List<TGroupPrice>();

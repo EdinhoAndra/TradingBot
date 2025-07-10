@@ -42,4 +42,9 @@ Execute the unit tests with:
 ```bash
 dotnet test
 ```
-main
+
+
+### Loading historical data in Renko mode
+
+When using the interactive console, the `start renko` command now prompts for an optional start date (`dd/MM/yyyy HH:mm:ss`).
+If provided, historical trades from that moment until now are loaded before subscribing to real-time data.
