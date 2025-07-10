@@ -118,6 +118,58 @@ public partial class DLLConnector
         }
     }
 
+    /// <summary>
+    /// Lista as contas disponíveis e permite selecionar uma via console.
+    /// </summary>
+    public static void ListAccountsInteractive()
+    {
+        var ids = ProfitDLL.ListAccounts();
+        if (ids.Length == 0)
+        {
+            WriteSync("Nenhuma conta disponível.");
+            return;
+        }
+
+        for (int i = 0; i < ids.Length; i++)
+        {
+            WriteSync($"{i}: {ids[i]}");
+        }
+
+        WriteSync("Selecione a conta (índice ou nome): ");
+        string? input = Console.ReadLine();
+        string? chosen = null;
+
+        if (int.TryParse(input, out int idx) && idx >= 0 && idx < ids.Length)
+        {
+            chosen = ids[idx];
+        }
+        else
+        {
+            foreach (var id in ids)
+            {
+                if (string.Equals(id, input, StringComparison.OrdinalIgnoreCase))
+                {
+                    chosen = id;
+                    break;
+                }
+            }
+        }
+
+        if (chosen == null)
+        {
+            WriteSync("Conta inválida.");
+            return;
+        }
+
+        if (!ProfitDLL.TrySetActiveAccount(chosen))
+        {
+            WriteSync("⚠️ Função SetActiveAccount não disponível. Conta selecionada apenas localmente.");
+        }
+
+        ActiveAccount = chosen;
+        WriteSync($"Conta ativa: {chosen}");
+    }
+
     static string strAssetListFilter = "";
 
     public static void SubscribeAsset()
@@ -522,6 +574,9 @@ public partial class DLLConnector
 
         public static bool bAtivo = false;
         public static bool bMarketConnected = false;
+
+        /// <summary>Conta selecionada no momento.</summary>
+        public static string? ActiveAccount { get; private set; }
 
         static readonly CultureInfo provider = CultureInfo.InvariantCulture;
         #endregion

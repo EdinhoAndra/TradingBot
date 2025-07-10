@@ -103,6 +103,9 @@ namespace Edison.Trading.Program
                 case "get agent name":
                     ProfitDLLClient.DLLConnector.WriteSync("Nome do agente: " + ProfitDLLClient.DLLConnector.DoGetAgentName());
                     break;
+                case "select account":
+                    ProfitDLLClient.DLLConnector.ListAccountsInteractive();
+                    break;
                 case "start renko":
                     if (monitor is not null)
                     {
