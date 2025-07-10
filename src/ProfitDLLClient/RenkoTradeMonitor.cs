@@ -14,7 +14,6 @@ namespace Edison.Trading.ProfitDLLClient
         private readonly RenkoBrickBuffer _brickBuffer;
         private readonly IProfitDLL _profitDll;
         private readonly TConnectorTradeCallback _dedicatedTradeCallback;
-        private readonly TConnectorTradeCallback _historyTradeCallback;
         private readonly string _symbol;
         private readonly string _exchange;
         private readonly object _lock = new object();
@@ -37,8 +36,6 @@ namespace Edison.Trading.ProfitDLLClient
 
             // Callback dedicado para Renko
             _dedicatedTradeCallback = new TConnectorTradeCallback(RenkoTradeCallback);
-            // Callback para histórico
-            _historyTradeCallback = new TConnectorTradeCallback(HistoryTradeCallback);
         }
 
         /// <summary>
@@ -58,7 +55,6 @@ namespace Edison.Trading.ProfitDLLClient
             ProfitDLL.UnsubscribeTicker(_symbol, _exchange);
             // P/Invoke permite null, mas a assinatura não é anulável
             ProfitDLL.SetTradeCallbackV2(null!);
-            ProfitDLL.SetHistoryTradeCallbackV2(null!);
             _renkoGenerator.OnCloseBrick -= _brickBuffer.AddBrick;
             _renkoGenerator.OnCloseBrick -= HandleNewBrick;
         }
@@ -83,30 +79,13 @@ namespace Edison.Trading.ProfitDLLClient
             }
         }
 
-        internal void HistoryTradeCallback(TConnectorAssetIdentifier a_Asset, nint a_pTrade, [MarshalAs(UnmanagedType.U4)] TConnectorTradeCallbackFlags a_nFlags)
-        {
-            if (a_Asset.Ticker != _symbol || a_Asset.Exchange != _exchange)
-                return;
-
-            var trade = new TConnectorTrade { Version = 0 };
-            if (_profitDll.TranslateTrade(a_pTrade, ref trade) == DLLConnector.NL_OK)
-            {
-                lock (_lock)
-                {
-                    _lastDclose = trade.Price;
-                    _renkoGenerator.AddPrice(trade.Price, trade.TradeDate);
-                }
-            }
-        }
-
         /// <summary>
         /// Manipulador chamado quando um novo tijolo Renko é fechado.
         /// </summary>
         private void HandleNewBrick(RenkoBrick brick)
         {
-            var dt = SystemTime.ToDateTime(brick.Timestamp)
-                .ToString("dd/MM/yyyy HH:mm:ss.fff");
-            Console.WriteLine($"Novo tijolo em {dt} | {brick.Direction} | {brick.Open} -> {brick.Close}");
+            // Exemplo: log, estratégia, etc.
+            Console.WriteLine($"Novo tijolo: {brick.Direction} | {brick.Open} -> {brick.Close}");
         }
 
         /// <summary>
@@ -138,16 +117,6 @@ namespace Edison.Trading.ProfitDLLClient
             out Memory<double> high, out Memory<double> low, out Memory<double> close)
         {
             _brickBuffer.ExtractSeries(out timestamps, out open, out high, out low, out close);
-        }
-
-        public void RequestHistory(DateTime start, DateTime end)
-        {
-            ProfitDLL.SetHistoryTradeCallbackV2(_historyTradeCallback);
-            ProfitDLL.GetHistoryTrades(
-                _symbol,
-                _exchange,
-                start.ToString("dd/MM/yyyy HH:mm:ss.fff"),
-                end.ToString("dd/MM/yyyy HH:mm:ss.fff"));
         }
 
         /// <summary>
