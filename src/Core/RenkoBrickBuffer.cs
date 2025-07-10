@@ -180,7 +180,9 @@ namespace Edison.Trading.Indicators
             {
                 lock (_lock)
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(_protoPath)!);
+                    string? dir = Path.GetDirectoryName(_protoPath);
+                    if (!string.IsNullOrEmpty(dir))
+                        Directory.CreateDirectory(dir);
                     using var fs = new FileStream(_protoPath, FileMode.Append, FileAccess.Write, FileShare.Read);
                     var proto = new RenkoBrickProto
                     {
