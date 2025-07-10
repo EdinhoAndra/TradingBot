@@ -19,6 +19,7 @@
     <!-- Exclude generated files from nested project obj folders -->
     <Compile Remove="**\obj\**\*.cs" />
     <ProjectReference Include="src\Core\Edison.Trading.Core.csproj" />
+    <ProjectReference Include="src\Indicators\Edison.Trading.Indicators.csproj" />
     <None Include="ProfitDLL.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

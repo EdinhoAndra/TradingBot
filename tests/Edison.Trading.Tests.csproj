@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\src\Core\Edison.Trading.Core.csproj" />
     <ProjectReference Include="..\src\ProfitDLLClient\Edison.Trading.ProfitDLLClient.csproj" />
+    <ProjectReference Include="..\src\Indicators\Edison.Trading.Indicators.csproj" />
   </ItemGroup>
 
   <ItemGroup>

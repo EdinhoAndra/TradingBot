@@ -192,7 +192,7 @@ public class NelogicaRenkoGeneratorTests
 
         // Instancia e configura buffer
         var generator = new NelogicaRenkoGenerator(r, tickSize);
-        generator.ConfigureBuffer(bufferSize, binPath, 60);
+        generator.ConfigureBuffer(bufferSize, binPath);
 
         // Mocka milhares de ticks crescentes
         double precoInicial = 100000;
@@ -219,7 +219,7 @@ public class NelogicaRenkoGeneratorTests
         Assert.That(generator.Bricks.TakeLast(bufferSize).Select(b => b.Close), Is.EqualTo(generator.Bricks.Skip(generator.Bricks.Count - bufferSize).Select(b => b.Close)));
 
         // Testa salvar buffer em disco
-        generator.StopPeriodicSaveAndFlush(); // Garante flush
+        generator.PersistBuffer();
         Assert.That(File.Exists(binPath), Is.True, "Arquivo binário não foi salvo");
         long binLength = new FileInfo(binPath).Length;
         Assert.That(binLength, Is.GreaterThan(0), "Arquivo binário está vazio");
@@ -266,7 +266,7 @@ public class NelogicaRenkoGeneratorTests
         string csvPath = Path.Combine(Path.GetTempPath(), $"renko_stop_{Guid.NewGuid()}.csv");
 
         var generator = new NelogicaRenkoGenerator(r, tickSize);
-        generator.ConfigureBuffer(200, binPath, 60);
+        generator.ConfigureBuffer(200, binPath);
 
         double initialPrice = 100000;
         int totalTicks = (bricksToGenerate + 5) * r;
@@ -276,9 +276,9 @@ public class NelogicaRenkoGeneratorTests
             generator.AddPrice(initialPrice + i * tickSize, timestamp);
         }
 
-        Assert.That(generator.Bricks.Count, Is.GreaterThanOrEqualTo(bricksToGenerate));
+        Assert.That(generator.Bricks.Count, Is.EqualTo(200));
 
-        generator.StopPeriodicSaveAndFlush();
+        generator.PersistBuffer();
         Assert.That(File.Exists(binPath), Is.True, "Bin file was not created");
 
         var proto = RenkoBufferProto.Parser.ParseFrom(File.ReadAllBytes(binPath));

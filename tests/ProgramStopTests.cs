@@ -20,7 +20,7 @@ public class ProgramStopTests
         string csvPath = Path.Combine(Path.GetTempPath(), $"renko_{Guid.NewGuid()}.csv");
 
         var generator = new NelogicaRenkoGenerator(r, tickSize);
-        generator.ConfigureBuffer(bufferSize, binPath, 60);
+        generator.ConfigureBuffer(bufferSize, binPath);
 
         double price = 100000;
         var ts = SystemTime.FromDateTime(DateTime.UtcNow);
@@ -31,7 +31,7 @@ public class ProgramStopTests
             generator.AddPrice(price, ts);
         }
 
-        generator.StopPeriodicSaveAndFlush();
+        generator.PersistBuffer();
         Assert.That(File.Exists(binPath), Is.True, "Binary file not saved");
 
         RenkoBufferProto proto;
