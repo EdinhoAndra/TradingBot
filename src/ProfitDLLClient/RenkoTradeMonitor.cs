@@ -53,7 +53,8 @@ namespace Edison.Trading.ProfitDLLClient
         public void Stop()
         {
             ProfitDLL.UnsubscribeTicker(_symbol, _exchange);
-            ProfitDLL.SetTradeCallbackV2(null);
+            // P/Invoke permite null, mas a assinatura não é anulável
+            ProfitDLL.SetTradeCallbackV2(null!);
             _renkoGenerator.OnCloseBrick -= _brickBuffer.AddBrick;
             _renkoGenerator.OnCloseBrick -= HandleNewBrick;
         }
