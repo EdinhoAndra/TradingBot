@@ -150,6 +150,15 @@ namespace Edison.Trading.Program
                     renkoGen.InitializeFromLastBrick(lastClose, direction);
                     monitor = new RenkoTradeMonitor(parts[0], parts[1], 15, 5.0, renkoGen);
                     monitor.SelectAccount();
+
+                    ProfitDLLClient.DLLConnector.WriteSync("Data/hora início do histórico (dd/MM/yyyy HH:mm:ss.fff ou enter p/ ignorar): ");
+                    string? startInput = Console.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(startInput) &&
+                        DateTime.TryParseExact(startInput, "dd/MM/yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture, DateTimeStyles.None, out var startDate))
+                    {
+                        monitor.RequestHistory(startDate, DateTime.Now);
+                    }
+
                     monitor.Start();
                     ProfitDLLClient.DLLConnector.WriteSync("🔄 Monitor Renko iniciado. Use 'stop renko' para parar.");
                     break;
