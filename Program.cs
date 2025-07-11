@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Edison.Trading.ProfitDLLClient;
 using System.Threading;
+using Google.Protobuf;
 
 namespace Edison.Trading.Program
 {
