@@ -21,6 +21,13 @@ namespace Edison.Trading.Program
             {
                 _brickLimit = limit;
             }
+            else
+            {
+                Console.Write("Número de bricks a manter (padrão 200): ");
+                string? input = Console.ReadLine();
+                if (int.TryParse(input, out limit) && limit > 0)
+                    _brickLimit = limit;
+            }
 
             bool exit = false;
             while (!exit)
