@@ -135,11 +135,15 @@ namespace Edison.Trading.Program
                     }
                     else
                     {
-                        ProfitDLLClient.DLLConnector.WriteSync("Nenhum arquivo de renko salvo encontrado. Buscando dClose do servidor...");
+                        ProfitDLLClient.DLLConnector.WriteSync("Nenhum arquivo de renko salvo encontrado.");
+                        ProfitDLLClient.DLLConnector.WriteSync("Informe o preço de fechamento do último renko conhecido: ");
+                        string? closeInput = Console.ReadLine();
+                        if (!double.TryParse(closeInput, NumberStyles.Float, CultureInfo.InvariantCulture, out lastClose))
+                        {
+                            ProfitDLLClient.DLLConnector.WriteSync("Valor de fechamento inválido.");
+                            return;
+                        }
 
-                        lastClose = 100_050.00; // Valor padrão, será substituído pelo real - este é o valor de fechamento do último renko
-
-                        ProfitDLLClient.DLLConnector.WriteSync($"Último preço de fechamento: {lastClose}");
                         ProfitDLLClient.DLLConnector.WriteSync("Informe a direção do último tijolo (up/down): ");
                         string? dirInput = Console.ReadLine();
                         direction = string.Equals(dirInput, "down", StringComparison.OrdinalIgnoreCase) ? RenkoDirection.Down : RenkoDirection.Up;
