@@ -301,7 +301,7 @@ public class NelogicaRenkoGenerator
         SaveBufferToDisk();
     }
 
-    private static void MoveCorruptedFile(string path)
+    public static void MoveCorruptedFile(string path)
     {
         try
         {
