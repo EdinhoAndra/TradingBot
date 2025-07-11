@@ -280,7 +280,7 @@ public partial class DLLConnector
     {
         lock (HistLock)
         {
-            HistTraders.Clear();
+            HistTrades.Clear();
         }
 
         HistoryEvent.Reset();
@@ -295,7 +295,7 @@ public partial class DLLConnector
 
         lock (HistLock)
         {
-            return HistTraders.ToList();
+            return HistTrades.ToList();
         }
     }
 
@@ -553,7 +553,7 @@ public partial class DLLConnector
                 var newTrade = new Trade(trade.Price, trade.Volume, (int)trade.Quantity, $"{a_Asset.Ticker}:{a_Asset.Exchange}", date);
                 lock (HistLock)
                 {
-                    HistTraders.Enqueue(newTrade);
+                    HistTrades.Enqueue(newTrade);
                 }
             }
 
@@ -604,9 +604,9 @@ public partial class DLLConnector
         #endregion
 
         #region variables
-        public static Queue<Trade> Traders = new Queue<Trade>();
+        public static Queue<Trade> Trades = new Queue<Trade>();
         private static readonly object TradeLock = new object();
-        public static Queue<Trade> HistTraders = new Queue<Trade>();
+        public static Queue<Trade> HistTrades = new Queue<Trade>();
         private static readonly object HistLock = new object();
         private static readonly AutoResetEvent HistoryEvent = new(false);
 

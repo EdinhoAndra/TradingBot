@@ -121,11 +121,10 @@ namespace Edison.Trading.Program
                     }
                     var parts = assetRaw.ToUpper().Split(':');
                     renkoGen = new NelogicaRenkoGenerator(15, 5.0);
-                    
+                                       
                     string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "renko_rt.bin");
                     renkoGen.ConfigureBuffer(200, filePath);
-                    //renkoGen.ConfigureBuffer(200, "renko_rt.bin");
-
+                    
                     double lastClose;
                     RenkoDirection direction;
                     if (renkoGen.TryLoadLastBrickFromDisk(out var lastBrick) && lastBrick is not null)
@@ -137,13 +136,9 @@ namespace Edison.Trading.Program
                     else
                     {
                         ProfitDLLClient.DLLConnector.WriteSync("Nenhum arquivo de renko salvo encontrado. Buscando dClose do servidor...");
-                        double dClose = 0;
-                        int ret = ProfitDLL.GetLastDailyClose(parts[0], parts[1], ref dClose, 0);
-                        if (ret != ProfitDLLClient.DLLConnector.NL_OK)
-                        {
-                            ProfitDLLClient.DLLConnector.WriteSync($"Erro ao obter dClose: {ret}");
-                        }
-                        lastClose = dClose;
+
+                        lastClose = 100_050.00; // Valor padrão, será substituído pelo real - este é o valor de fechamento do último renko
+
                         ProfitDLLClient.DLLConnector.WriteSync($"Último preço de fechamento: {lastClose}");
                         ProfitDLLClient.DLLConnector.WriteSync("Informe a direção do último tijolo (up/down): ");
                         string? dirInput = Console.ReadLine();
@@ -152,6 +147,9 @@ namespace Edison.Trading.Program
 
                     renkoGen.InitializeFromLastBrick(lastClose, direction);
                     monitor = new RenkoTradeMonitor(parts[0], parts[1], 15, 5.0, renkoGen);
+
+                    lastClose = monitor.GetLastClose(renkoGen.Bricks.Last());
+                    
 
                     monitor.SelectAccount();
                     monitor.Start();

@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <AssemblyName>Edison.Trading.ProfitDLLClient.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

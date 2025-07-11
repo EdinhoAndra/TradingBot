@@ -100,13 +100,13 @@ namespace Edison.Trading.ProfitDLLClient
         }
 
         /// <summary>
-        /// Retorna o último preço dclose recebido de forma thread-safe.
+        /// Retorna o Close do último brick recebido de forma thread-safe.
         /// </summary>
-        public double GetLastDclose()
+        public double GetLastClose(RenkoBrick brick)
         {
             lock (_lock)
             {
-                return _lastDclose;
+                return brick.Close;
             }
         }
 
