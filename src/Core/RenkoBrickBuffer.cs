@@ -99,7 +99,7 @@ namespace Edison.Trading.Indicators
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[RenkoBrickBuffer] Erro ao ler {_protoPath}: {ex.Message}");
-                    MoveCorruptedFile(_protoPath);
+                    NelogicaRenkoGenerator.MoveCorruptedFile(_protoPath);
                 }
             }
 
@@ -130,7 +130,7 @@ namespace Edison.Trading.Indicators
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[RenkoBrickBuffer] Erro ao ler {_csvPath}: {ex.Message}");
-                    MoveCorruptedFile(_csvPath);
+                    NelogicaRenkoGenerator.MoveCorruptedFile(_csvPath);
                 }
             }
         }
@@ -202,25 +202,5 @@ namespace Edison.Trading.Indicators
             }
         }
 
-        private static void MoveCorruptedFile(string path)
-        {
-            try
-            {
-                if (!File.Exists(path)) return;
-                string? dir = Path.GetDirectoryName(path);
-                if (dir == null) return;
-                string corruptedDir = Path.Combine(dir, "corrupted");
-                Directory.CreateDirectory(corruptedDir);
-                string fileName = Path.GetFileNameWithoutExtension(path);
-                string ext = Path.GetExtension(path);
-                string newName = $"{fileName}_{DateTime.UtcNow:yyyyMMddHHmmssfff}{ext}";
-                string destPath = Path.Combine(corruptedDir, newName);
-                File.Move(path, destPath, overwrite: true);
-            }
-            catch (Exception moveEx)
-            {
-                Console.WriteLine($"[RenkoBrickBuffer] Falha ao mover arquivo corrompido {path}: {moveEx.Message}");
-            }
-        }
     }
 }
