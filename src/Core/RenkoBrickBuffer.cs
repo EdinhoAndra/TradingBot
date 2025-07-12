@@ -11,8 +11,8 @@ namespace Edison.Trading.Indicators
     /// <summary>
     /// Thread-safe buffer that keeps the most recent RenkoBricks in memory.
     /// Bricks are loaded from a proto-bin file (incremental format) or an
-    /// optional CSV fallback. New bricks are appended to the proto file as
-    /// they are processed so the historical file grows incrementally.
+    /// optional CSV fallback. Persistence to proto-bin/CSV is handled by
+    /// <see cref="NelogicaRenkoGenerator"/>.
     /// </summary>
     public class RenkoBrickBuffer
     {
@@ -166,40 +166,12 @@ namespace Edison.Trading.Indicators
         }
 
         /// <summary>
-        /// Adds a brick to the in-memory buffer and appends it to the proto file.
+        /// Adds a brick to the in-memory buffer.
+        /// Persistence is handled by <see cref="NelogicaRenkoGenerator"/>.
         /// </summary>
         public void AddBrick(RenkoBrick brick)
         {
             AddBrickInternal(brick);
-            AppendBrickToFile(brick);
-        }
-
-        private void AppendBrickToFile(RenkoBrick brick)
-        {
-            try
-            {
-                lock (_lock)
-                {
-                    string? dir = Path.GetDirectoryName(_protoPath);
-                    if (!string.IsNullOrEmpty(dir))
-                        Directory.CreateDirectory(dir);
-                    using var fs = new FileStream(_protoPath, FileMode.Append, FileAccess.Write, FileShare.Read);
-                    var proto = new RenkoBrickProto
-                    {
-                        Open = brick.Open,
-                        High = brick.High,
-                        Low = brick.Low,
-                        Close = brick.Close,
-                        Direction = (int)brick.Direction,
-                        Timestamp = SystemTime.ToDateTime(brick.Timestamp).ToUniversalTime().Ticks
-                    };
-                    proto.WriteDelimitedTo(fs);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[RenkoBrickBuffer] Erro ao persistir {_protoPath}: {ex.Message}");
-            }
         }
 
     }
