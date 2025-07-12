@@ -213,7 +213,7 @@ public class NelogicaRenkoGeneratorTests
         table.AppendLine("OPEN,HIGH,LOW,CLOSE");
         foreach (var brick in generator.Bricks.Take(numBricksDesejados))
             table.AppendLine($"{brick.Open},{brick.High},{brick.Low},{brick.Close}");
-        TestContext.WriteLine(table.ToString());
+        TestContext.Out.WriteLine(table.ToString());
 
         // Testa buffer em memória
         Assert.That(generator.Bricks.TakeLast(bufferSize).Select(b => b.Close), Is.EqualTo(generator.Bricks.Skip(generator.Bricks.Count - bufferSize).Select(b => b.Close)));
